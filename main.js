@@ -192,7 +192,7 @@
     doff -= 0.42;
     lemDash.style.strokeDashoffset = doff;
 
-    T += 0.04;
+    T += 0.01;
     const p = lem(T);
     trav.setAttribute('cx', p.x);
     trav.setAttribute('cy', p.y);
