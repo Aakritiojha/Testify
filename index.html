@@ -3,585 +3,433 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Skillbyte | Break the Loop</title>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-  <style>
-    /* GLOBAL & UTILS */
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body { background: #06070d; overflow-x: hidden; color: white; }
 
-    /* ─── HERO ─── */
-    #hero {
-      height: 100vh; width: 100%;
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      position: relative; font-family: 'Syne', sans-serif;
-    }
-    #bg { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+  <!-- ── PRIMARY SEO ── -->
+  <title>Skillbyte | Learn It. Use It Today. Bite-Sized Guides from $9</title>
+  <meta name="description" content="Skillbyte publishes ruthlessly edited, bite-sized guides on AI, Marketing, and SEO. Zero fluff. Go from zero to doing in a single 45-minute read. From $9.">
+  <meta name="keywords" content="bite-sized guides, AI guides, marketing guides, SEO guides, online learning, practical guides, no-fluff learning">
+  <meta name="author" content="Skillbyte">
+  <link rel="canonical" href="https://skillbyte.co/">
 
-    nav {
-      position: absolute; top: 0; left: 0; right: 0; z-index: 10;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 0 40px; height: 80px;
-    }
-    .logo { font-size: 18px; font-weight: 800; color: #f0f2fa; text-decoration: none; display: flex; align-items: center; gap: 7px; }
-    .logo-dot { width: 7px; height: 7px; border-radius: 50%; background: #2563ff; box-shadow: 0 0 10px rgba(37,99,255,0.8); }
-    .nav-links { display: flex; gap: 24px; list-style: none; }
-    .nav-links a { font-size: 13px; color: rgba(255,255,255,0.4); text-decoration: none; transition: 0.3s; font-family: 'DM Sans'; }
-    .nav-links a:hover { color: #fff; }
+  <!-- ── OPEN GRAPH (Facebook / LinkedIn) ── -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://skillbyte.co/">
+  <meta property="og:title" content="Skillbyte | Bite-Sized Guides. Zero Fluff. Straight to Doing.">
+  <meta property="og:description" content="Break the course loop. Skillbyte guides get you from zero to doing in 45 minutes flat — starting from $9.">
+  <meta property="og:image" content="https://skillbyte.co/og-image.png">
+  <meta property="og:site_name" content="Skillbyte">
 
-    .bulb-wrap {
-      position: relative; z-index: 2; height: 240px; width: 200px;
-      display: flex; justify-content: center; align-items: center; margin-top: -40px;
-      cursor: pointer; transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-    .bulb-wrap:hover { transform: scale(1.08); }
+  <!-- ── TWITTER CARD ── -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://skillbyte.co/">
+  <meta name="twitter:title" content="Skillbyte | Bite-Sized Guides. Zero Fluff. Straight to Doing.">
+  <meta name="twitter:description" content="Break the course loop. Skillbyte guides get you from zero to doing in 45 minutes flat — starting from $9.">
+  <meta name="twitter:image" content="https://skillbyte.co/og-image.png">
 
-    .scroll-down-icon {
-      position: absolute; bottom: 50px; left: 50%; transform: translateX(-50%);
-      display: flex; flex-direction: column; align-items: center;
-      z-index: 10; animation: breathe 3s infinite ease-in-out;
+  <!-- ── STRUCTURED DATA (JSON-LD) ── -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Skillbyte",
+    "url": "https://skillbyte.co",
+    "description": "Bite-sized, practical guides on AI, Marketing, and SEO. Zero fluff — go from zero to doing in a single sitting.",
+    "logo": "https://skillbyte.co/logo.png",
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "contactType": "Customer Support",
+      "email": "aaksss0691@gmail.com"
+    },
+    "offers": {
+      "@type": "AggregateOffer",
+      "priceCurrency": "USD",
+      "lowPrice": "9",
+      "offerCount": "12"
     }
-    .scroll-text {
-      font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 500;
-      letter-spacing: 0.25em; text-transform: uppercase;
-      color: rgba(255,255,255,0.45); margin-bottom: 12px;
-    }
-    .chevron-group { display: flex; flex-direction: column; align-items: center; }
-    .chevron-group span {
-      display: block; width: 14px; height: 14px;
-      border-bottom: 3px solid rgba(255,255,255,0.35);
-      border-right: 3px solid rgba(255,255,255,0.35);
-      transform: rotate(45deg); margin-top: -6px;
-    }
+  }
+  </script>
 
-    @keyframes breathe {
-      0%, 100% { opacity: 0.4; transform: translateX(-50%) translateY(0); }
-      50% { opacity: 0.9; transform: translateX(-50%) translateY(12px); }
-    }
+  <!-- ── PERFORMANCE: preconnect to font origins ── -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    #bloom {
-      position: absolute; top: 35%; left: 50%; transform: translate(-50%, -50%);
-      width: 300px; height: 300px;
-      background: radial-gradient(circle, rgba(251,191,36,0.4) 0%, rgba(251,191,36,0.05) 60%, transparent 80%);
-      filter: blur(45px); z-index: 1; opacity: 0; pointer-events: none;
-    }
+  <!-- ── FONTS: display=swap prevents render-blocking ── -->
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
 
-    svg#bulb { width: 120px; height: 200px; overflow: visible; }
-    #hL, #hR { opacity: 0; }
+  <link rel="stylesheet" href="style.css">
 
-    .content {
-      position: relative; z-index: 5; display: flex; flex-direction: column;
-      align-items: center; gap: 15px; text-align: center;
-    }
-    .eyebrow { font-size: 10px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: #4f8eff; opacity: 0; transform: translateY(10px); transition: 0.6s; }
-    .eyebrow.show { opacity: 1; transform: none; }
-    h1 { font-size: clamp(40px,6vw,72px); font-weight: 800; color: #f0f2fa; line-height: 1.1; display: flex; flex-wrap: wrap; justify-content: center; gap: 0 18px; }
-    .word { opacity: 0; transform: translateY(30px); transition: 0.7s cubic-bezier(0.2,0,0.2,1); }
-    .word.show { opacity: 1; transform: none; }
-    .word.accent { background: linear-gradient(135deg,#4f8eff 20%,#7c3aed 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    .sub { font-size: 16px; color: rgba(255,255,255,0.3); max-width: 440px; font-family: 'DM Sans'; opacity: 0; transform: translateY(15px); transition: 0.6s; }
-    .sub.show { opacity: 1; transform: none; }
-    .btns { display: flex; gap: 15px; margin-top: 15px; opacity: 0; transform: translateY(10px); transition: 0.6s; }
-    .btns.show { opacity: 1; transform: none; }
-
-    .bp { padding: 14px 30px; border-radius: 12px; background: #2563ff; color: #fff; border: none; font-weight: 600; cursor: pointer; transition: 0.3s; font-family: 'DM Sans'; }
-    .bp:hover { background: #3b7fff; transform: translateY(-2px); box-shadow: 0 10px 20px rgba(37,99,255,0.3); }
-    .bs { padding: 14px 24px; border-radius: 12px; background: transparent; color: rgba(255,255,255,0.5); border: 1px solid rgba(255,255,255,0.1); cursor: pointer; transition: 0.3s; font-family: 'DM Sans'; font-size: 14px; }
-    .bs:hover { color: #fff; border-color: rgba(255,255,255,0.4); background: rgba(255,255,255,0.03); }
-
-    /* ─── TRAP SECTION ─── */
-    #trap {
-      background: #06070d; min-height: 100vh;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      padding: 120px 40px; position: relative;
-    }
-    .trap-content-wrapper {
-  text-align: center;
-  width: 100%; /* Ensures the wrapper fills the flex container for proper alignment */
-  z-index: 2;   /* Keeps text above the background dots/canvas */
-}
-    .trap-eyebrow { font-family: 'DM Sans', sans-serif; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: #4f8eff; margin-bottom: 14px; }
-    .trap-headline { font-family: 'Syne', sans-serif; font-size: clamp(28px,4vw,46px); font-weight: 800; color: #f0f2fa; margin-bottom: 8px; }
-    .trap-sub { font-family: 'DM Sans', sans-serif; font-size: 14px; color: rgba(255,255,255,0.4); margin-bottom: 60px; }
-    #inf-stage { width: 100%; max-width: 720px; }
-    #inf-svg { width: 100%; display: block; overflow: visible; }
-    .lbl-g { transition: opacity 0.55s ease; pointer-events: none; }
-
-    /* reveal animations */
-    .trap-headline { opacity: 0; transform: translateY(30px); transition: opacity 0.8s cubic-bezier(0.2,0,0.2,1), transform 0.8s cubic-bezier(0.2,0,0.2,1); }
-    .trap-eyebrow, .trap-sub { opacity: 0; transform: translateY(20px); transition: all 0.7s ease-out; }
-    .reveal-active { opacity: 1 !important; transform: translateY(0) !important; }
-    .reveal-item { opacity: 0; transform: translateY(20px); transition: all 0.8s cubic-bezier(0.2,0,0.2,1); }
-    .reveal-item.reveal-active { opacity: 1; transform: translateY(0); }
-
-    /* ─── CARD SECTION ─── */
-    #featured {
-      background: #06070d;
-      padding: 100px 40px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      font-family: 'DM Sans', sans-serif;
-    }
-
-    .sb-eyebrow {
-      font-family: 'DM Sans', sans-serif;
-      font-size: 11px; letter-spacing: 0.22em;
-      text-transform: uppercase; color: #4f8eff;
-      margin-bottom: 14px; text-align: center;
-    }
-    .sb-section-title {
-      font-family: 'Syne', sans-serif;
-      font-size: clamp(26px, 3.5vw, 42px);
-      font-weight: 800; color: #f0f2fa;
-      margin-bottom: 60px; text-align: center;
-    }
-
-    .sb-card {
-      position: relative; max-width: 860px; width: 100%;
-      border-radius: 22px; display: flex; overflow: hidden;
-      cursor: pointer;
-      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      background: #0d0f1c; border: 1px solid rgba(255,255,255,0.06);
-    }
-    .sb-card::before {
-      content: ''; position: absolute; inset: -1px; border-radius: 23px;
-      background: linear-gradient(135deg, rgba(37,99,255,0.55) 0%, rgba(124,58,237,0.35) 50%, transparent 100%);
-      z-index: 0; opacity: 0; transition: opacity 0.45s ease;
-    }
-    .sb-card::after {
-      content: ''; position: absolute; inset: 1px;
-      border-radius: 21px; background: #0d0f1c; z-index: 1;
-    }
-    .sb-card:hover::before { opacity: 1; }
-    .sb-card:hover { transform: translateY(-6px); }
-    .sb-card:hover .sb-glow-orb { opacity: 1; }
-
-    .sb-glow-orb {
-      position: absolute; width: 420px; height: 320px;
-      top: 50%; left: 40%; transform: translate(-50%, -50%);
-      background: radial-gradient(ellipse, rgba(37,99,255,0.18) 0%, rgba(124,58,237,0.08) 50%, transparent 75%);
-      filter: blur(40px); z-index: 2; opacity: 0;
-      transition: opacity 0.5s ease; pointer-events: none;
-    }
-
-    .sb-card-image {
-      position: relative; z-index: 3; flex: 0 0 300px; min-height: 380px;
-      background: linear-gradient(160deg, #111427 0%, #0a0c1a 100%);
-      display: flex; align-items: center; justify-content: center;
-      overflow: hidden; border-right: 1px solid rgba(255,255,255,0.04);
-    }
-    .sb-img-bg-glow {
-      position: absolute; inset: 0;
-      background: radial-gradient(circle at 50% 60%, rgba(37,99,255,0.22) 0%, transparent 70%);
-      pointer-events: none;
-    }
-    .sb-book-mockup {
-      position: relative; z-index: 2; width: 150px;
-      filter: drop-shadow(0 20px 60px rgba(37,99,255,0.35)) drop-shadow(0 0 30px rgba(124,58,237,0.2));
-      transition: filter 0.4s ease, transform 0.4s ease;
-    }
-    .sb-card:hover .sb-book-mockup {
-      filter: drop-shadow(0 24px 80px rgba(37,99,255,0.55)) drop-shadow(0 0 50px rgba(124,58,237,0.35));
-      transform: scale(1.05) rotate(-1deg);
-    }
-
-    .sb-badge {
-      position: absolute; top: 18px; left: 18px; z-index: 4;
-      background: rgba(37,99,255,0.15); border: 1px solid rgba(37,99,255,0.4);
-      border-radius: 8px; padding: 5px 12px; font-size: 10px; font-weight: 500;
-      letter-spacing: 0.15em; text-transform: uppercase; color: #6fa8ff;
-      backdrop-filter: blur(8px);
-    }
-    .sb-price-tag {
-      position: absolute; bottom: 18px; left: 18px; z-index: 4;
-      background: rgba(10,12,26,0.85); border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 10px; padding: 6px 14px;
-      display: flex; align-items: baseline; gap: 4px; backdrop-filter: blur(8px);
-    }
-    .sb-price-old { font-size: 11px; color: rgba(255,255,255,0.25); text-decoration: line-through; }
-    .sb-price-new { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 800; color: #fff; }
-
-    .sb-card-body {
-      position: relative; z-index: 3; flex: 1;
-      padding: 40px 36px; display: flex; flex-direction: column;
-      justify-content: center; gap: 20px;
-    }
-    .sb-card-tag { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: #7c3aed; font-weight: 500; }
-    .sb-card-title { font-family: 'Syne', sans-serif; font-size: 24px; font-weight: 800; color: #f0f2fa; line-height: 1.2; }
-    .sb-card-title span { background: linear-gradient(135deg, #4f8eff 20%, #7c3aed 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-
-    .sb-pointers { display: flex; flex-direction: column; gap: 10px; list-style: none; padding: 0; margin: 0; }
-    .sb-pointer { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; color: rgba(255,255,255,0.55); line-height: 1.5; }
-    .sb-pointer-dot { width: 5px; height: 5px; border-radius: 50%; background: #2563ff; margin-top: 6px; flex-shrink: 0; box-shadow: 0 0 8px rgba(37,99,255,0.8); }
-
-    .sb-divider { height: 1px; background: rgba(255,255,255,0.05); margin: 4px 0; }
-
-    .sb-cta-row { display: flex; align-items: center; gap: 16px; margin-top: 4px; }
-    .sb-cta-btn {
-      padding: 13px 26px; border-radius: 12px; background: #2563ff;
-      color: #fff; border: none; font-weight: 600; font-size: 14px;
-      cursor: pointer; font-family: 'DM Sans', sans-serif;
-      transition: all 0.3s ease; position: relative; overflow: hidden;
-    }
-    .sb-cta-btn::after { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, transparent 40%, rgba(255,255,255,0.15) 100%); opacity: 0; transition: opacity 0.3s; }
-    .sb-cta-btn:hover { background: #3b7fff; transform: translateY(-2px); box-shadow: 0 10px 30px rgba(37,99,255,0.4), 0 0 60px rgba(37,99,255,0.15); }
-    .sb-cta-btn:hover::after { opacity: 1; }
-
-    .sb-cta-link {
-      font-size: 13px; color: rgba(255,255,255,0.3); cursor: pointer;
-      transition: color 0.3s; background: none; border: none;
-      font-family: 'DM Sans', sans-serif; display: flex; align-items: center; gap: 5px;
-    }
-    .sb-cta-link:hover { color: rgba(255,255,255,0.7); }
-
-    .sb-rating { display: flex; align-items: center; gap: 6px; font-size: 12px; color: rgba(255,255,255,0.35); }
-    .sb-stars { color: #fbbf24; font-size: 11px; letter-spacing: 1px; }
-
-    .sb-shimmer-edge {
-      position: absolute; top: 0; left: 0; right: 0; height: 1px;
-      background: linear-gradient(90deg, transparent 0%, rgba(37,99,255,0.6) 40%, rgba(124,58,237,0.6) 60%, transparent 100%);
-      z-index: 5; opacity: 0; transition: opacity 0.4s ease;
-      border-radius: 22px 22px 0 0;
-    }
-    .sb-card:hover .sb-shimmer-edge { opacity: 1; }
-
-    @media (max-width: 620px) {
-      .sb-card { flex-direction: column; }
-      .sb-card-image { flex: 0 0 220px; min-height: 220px; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.04); }
-    }
-  </style>
+  <!-- Favicon placeholders -->
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 </head>
 <body>
 
-<!-- ─── HERO ─── -->
-<div id="hero">
-  <canvas id="bg"></canvas>
-  <nav>
-    <a href="#" class="logo"><span class="logo-dot"></span>skillbyte</a>
-    <ul class="nav-links">
-      <li><a href="#">Products</a></li>
-      <li><a href="#">How it works</a></li>
-      <li><a href="#">Pricing</a></li>
-    </ul>
-    <button class="bp" style="padding:10px 20px; font-size:13px">Get the Guide →</button>
-  </nav>
+  <!-- HERO -->
+  <div id="hero">
+    <canvas id="bg" aria-hidden="true"></canvas>
 
-  <div class="bulb-wrap" id="bulbTrigger">
-    <div id="bloom"></div>
-    <svg id="bulb" viewBox="0 0 140 220">
-      <defs>
-        <clipPath id="cL"><rect x="0" y="0" width="70" height="220"/></clipPath>
-        <clipPath id="cR"><rect x="70" y="0" width="70" height="220"/></clipPath>
-        <radialGradient id="ig" cx="50%" cy="40%" r="50%">
-          <stop offset="0%" stop-color="#fff9c4" stop-opacity="0" id="ig0"/>
-          <stop offset="100%" stop-color="#fbbf24" stop-opacity="0" id="ig1"/>
-        </radialGradient>
-      </defs>
-      <g id="hL" clip-path="url(#cL)">
-        <path d="M70,10 C36,10 8,38 8,72 C8,96 21,116 40,130 C44,133 46,138 46,143 L46,185 L70,185 Z" fill="url(#ig)" stroke="#fbbf24" stroke-opacity="0.3" stroke-width="2"/>
-        <path d="M70,145 L58,145 M70,155 L56,155 M70,165 L58,165" fill="none" stroke="#222" stroke-width="2.5" stroke-linecap="round"/>
-      </g>
-      <g id="hR" clip-path="url(#cR)">
-        <path d="M70,10 C104,10 132,38 132,72 C132,96 119,116 100,130 C96,133 94,138 94,143 L94,185 L70,185 Z" fill="url(#ig)" stroke="#fbbf24" stroke-opacity="0.3" stroke-width="2"/>
-        <path d="M70,145 L82,145 M70,155 L84,155 M70,165 L82,165" fill="none" stroke="#222" stroke-width="2.5" stroke-linecap="round"/>
-      </g>
-      <line id="seam" x1="70" y1="10" x2="70" y2="185" stroke="#fbbf24" stroke-width="1.5" opacity="0"/>
-      <g id="rays" opacity="0">
-        <line x1="70" y1="0" x2="70" y2="-15" stroke="#fbbf24" stroke-width="3" stroke-linecap="round"/>
-        <line x1="70" y1="0" x2="70" y2="-12" stroke="#fbbf24" stroke-width="3" stroke-linecap="round" transform="rotate(45 70 72)"/>
-        <line x1="70" y1="0" x2="70" y2="-12" stroke="#fbbf24" stroke-width="3" stroke-linecap="round" transform="rotate(-45 70 72)"/>
-        <line x1="70" y1="0" x2="70" y2="-12" stroke="#fbbf24" stroke-width="3" stroke-linecap="round" transform="rotate(90 70 72)"/>
-        <line x1="70" y1="0" x2="70" y2="-12" stroke="#fbbf24" stroke-width="3" stroke-linecap="round" transform="rotate(-90 70 72)"/>
-      </g>
-    </svg>
-  </div>
+    <nav aria-label="Main navigation">
+      <a href="/" class="logo" aria-label="Skillbyte home">
+        <span class="logo-dot" aria-hidden="true"></span>skillbyte
+      </a>
+      <ul class="nav-links">
+        <li><a href="#featured">Products</a></li>
+        <li><a href="#trap">How it works</a></li>
+        <li><a href="#agency">Pricing</a></li>
+      </ul>
+      <button class="bp" style="padding:10px 20px; font-size:13px" onclick="document.getElementById('agency').scrollIntoView({behavior:'smooth'})">Get the Guide →</button>
+    </nav>
 
-  <div class="scroll-down-icon">
-    <span class="scroll-text">Scroll Down</span>
-    <div class="chevron-group"><span></span><span></span></div>
-  </div>
+    <div class="bulb-wrap" id="bulbTrigger" role="presentation" aria-hidden="true">
+      <div id="bloom"></div>
+      <svg id="bulb" viewBox="0 0 140 220" aria-hidden="true" focusable="false">
+        <defs>
+          <clipPath id="cL"><rect x="0" y="0" width="70" height="220"/></clipPath>
+          <clipPath id="cR"><rect x="70" y="0" width="70" height="220"/></clipPath>
+          <radialGradient id="ig" cx="50%" cy="40%" r="50%">
+            <stop offset="0%" stop-color="#fff9c4" stop-opacity="0" id="ig0"/>
+            <stop offset="100%" stop-color="#fbbf24" stop-opacity="0" id="ig1"/>
+          </radialGradient>
+        </defs>
+        <g id="hL" clip-path="url(#cL)">
+          <path d="M70,10 C36,10 8,38 8,72 C8,96 21,116 40,130 C44,133 46,138 46,143 L46,185 L70,185 Z" fill="url(#ig)" stroke="#fbbf24" stroke-opacity="0.3" stroke-width="2"/>
+          <path d="M70,145 L58,145 M70,155 L56,155 M70,165 L58,165" fill="none" stroke="#222" stroke-width="2.5" stroke-linecap="round"/>
+        </g>
+        <g id="hR" clip-path="url(#cR)">
+          <path d="M70,10 C104,10 132,38 132,72 C132,96 119,116 100,130 C96,133 94,138 94,143 L94,185 L70,185 Z" fill="url(#ig)" stroke="#fbbf24" stroke-opacity="0.3" stroke-width="2"/>
+          <path d="M70,145 L82,145 M70,155 L84,155 M70,165 L82,165" fill="none" stroke="#222" stroke-width="2.5" stroke-linecap="round"/>
+        </g>
+        <line id="seam" x1="70" y1="10" x2="70" y2="185" stroke="#fbbf24" stroke-width="1.5" opacity="0"/>
+        <g id="rays" opacity="0" aria-hidden="true">
+          <line x1="70" y1="0" x2="70" y2="-15" stroke="#fbbf24" stroke-width="3" stroke-linecap="round"/>
+          <line x1="70" y1="0" x2="70" y2="-12" stroke="#fbbf24" stroke-width="3" stroke-linecap="round" transform="rotate(45 70 72)"/>
+          <line x1="70" y1="0" x2="70" y2="-12" stroke="#fbbf24" stroke-width="3" stroke-linecap="round" transform="rotate(-45 70 72)"/>
+          <line x1="70" y1="0" x2="70" y2="-12" stroke="#fbbf24" stroke-width="3" stroke-linecap="round" transform="rotate(90 70 72)"/>
+          <line x1="70" y1="0" x2="70" y2="-12" stroke="#fbbf24" stroke-width="3" stroke-linecap="round" transform="rotate(-90 70 72)"/>
+        </g>
+      </svg>
+    </div>
 
-  <div class="content">
-    <p class="eyebrow" id="ey">No more course fatigue</p>
-    <h1>
-      <span class="word" id="w0">Learn</span>
-      <span class="word" id="w1">it.</span>
-      <span class="word accent" id="w2">Use</span>
-      <span class="word accent" id="w3">it</span>
-      <span class="word accent" id="w4">today.</span>
-    </h1>
-    <p class="sub" id="sub">Bite-sized guides. Zero fluff. Straight to doing.</p>
-    <div class="btns" id="btns">
-      <button class="bp">Browse Guides — from $9</button>
-      <button class="bs" onclick="document.getElementById('trap').scrollIntoView({behavior:'smooth'})">See how it works ↓</button>
+    <div class="scroll-down-icon" aria-hidden="true">
+      <span class="scroll-text">Scroll Down</span>
+      <div class="chevron-group"><span></span><span></span></div>
+    </div>
+
+    <div class="content">
+      <p class="eyebrow" id="ey">No more course fatigue</p>
+      <h1>
+        <span class="word" id="w0">Learn</span>
+        <span class="word" id="w1">it.</span>
+        <span class="word accent" id="w2">Use</span>
+        <span class="word accent" id="w3">it</span>
+        <span class="word accent" id="w4">today.</span>
+      </h1>
+      <p class="sub" id="sub">Bite-sized guides. Zero fluff. Straight to doing.</p>
+      <div class="btns" id="btns">
+        <button class="bp" onclick="document.getElementById('featured').scrollIntoView({behavior:'smooth'})">Browse Guides — from $9</button>
+        <button class="bs" onclick="document.getElementById('trap').scrollIntoView({behavior:'smooth'})">See how it works ↓</button>
+      </div>
     </div>
   </div>
-</div>
 
-<!-- ─── TRAP / LOOP ─── -->
-<section id="trap">
-  <div class="trap-content-wrapper">
-    <p class="trap-eyebrow reveal-item">The course trap</p>
-    <h2 class="trap-headline reveal-item">Sound familiar?</h2>
-    <p class="trap-sub reveal-item">The same cycle. Every single time.</p>
-  </div>
+  <!-- TRAP / LOOP -->
+  <section id="trap" aria-labelledby="trap-heading">
+    <div class="trap-content-wrapper">
+      <p class="trap-eyebrow reveal-item">The course trap</p>
+      <h2 class="trap-headline reveal-item" id="trap-heading">Sound familiar?</h2>
+      <p class="trap-sub reveal-item">The same cycle. Every single time.</p>
+    </div>
 
-  <div id="inf-stage">
-    <svg id="inf-svg" viewBox="0 0 720 480" xmlns="http://www.w3.org/2000/svg">
-      <path id="lem-base" fill="none" stroke="rgba(255,255,255,0.055)" stroke-width="1.5"/>
-      <path id="lem-dash" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="1" stroke-dasharray="5 9"/>
-      <circle id="nd0" r="4" fill="#2563ff" stroke="#06070d" stroke-width="2.5"/>
-      <circle id="nd1" r="4" fill="#2563ff" stroke="#06070d" stroke-width="2.5"/>
-      <circle id="nd2" r="4" fill="#2563ff" stroke="#06070d" stroke-width="2.5"/>
-      <circle id="nd-ring" r="11" fill="none" stroke="rgba(37,99,255,0.4)" stroke-width="1" opacity="0"/>
-      <g id="lbl0" class="lbl-g" opacity="0"><text id="l0t" font-family="'Syne',sans-serif" font-size="14" font-weight="700" fill="#fff"/><text id="l0s" font-family="'DM Sans',sans-serif" font-size="11" fill="rgba(255,255,255,0.3)"/></g>
-      <g id="lbl1" class="lbl-g" opacity="0"><text id="l1t" font-family="'Syne',sans-serif" font-size="14" font-weight="700" fill="#fff"/><text id="l1s" font-family="'DM Sans',sans-serif" font-size="11" fill="rgba(255,255,255,0.3)"/></g>
-      <g id="lbl2" class="lbl-g" opacity="0"><text id="l2t" font-family="'Syne',sans-serif" font-size="14" font-weight="700" fill="#fff"/><text id="l2s" font-family="'DM Sans',sans-serif" font-size="11" fill="rgba(255,255,255,0.3)"/></g>
-      <circle id="traveller" r="4.5" fill="#ffffff"/>
-    </svg>
-  </div>
-
-  <div class="scroll-down-icon">
-    <span class="scroll-text">Here's the Escape</span>
-    <div class="chevron-group"><span></span><span></span></div>
-  </div>
-</section>
-
-<!-- ─── FEATURED CARD ─── -->
-<section id="featured" class="reveal-section">
-  <p class="sb-eyebrow reveal-item">Featured Guide</p>
-  <h2 class="sb-section-title reveal-item">Your shortcut to actually doing it.</h2>
-
-  <div class="sb-card reveal-item">
-    <div class="sb-shimmer-edge"></div>
-    <div class="sb-glow-orb"></div>
-
-    <div class="sb-card-image">
-      <div class="sb-img-bg-glow"></div>
-      <div class="sb-badge">New Drop</div>
-
-      <svg class="sb-book-mockup" viewBox="0 0 150 200" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <linearGradient id="bookCover" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#1a2a5e"/>
-            <stop offset="100%" stop-color="#0d1433"/>
-          </linearGradient>
-          <linearGradient id="bookSpine" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stop-color="#0a0f25"/>
-            <stop offset="100%" stop-color="#1a2a5e"/>
-          </linearGradient>
-          <linearGradient id="glowLine" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stop-color="#2563ff" stop-opacity="0"/>
-            <stop offset="50%" stop-color="#4f8eff"/>
-            <stop offset="100%" stop-color="#7c3aed" stop-opacity="0"/>
-          </linearGradient>
-        </defs>
-        <rect x="18" y="4" width="132" height="192" rx="4" fill="url(#bookSpine)"/>
-        <rect x="22" y="0" width="128" height="200" rx="4" fill="url(#bookCover)"/>
-        <rect x="22" y="0" width="128" height="200" rx="4" fill="none" stroke="rgba(79,142,255,0.25)" stroke-width="1"/>
-        <rect x="30" y="16" width="112" height="2" rx="1" fill="url(#glowLine)" opacity="0.8"/>
-        <rect x="30" y="22" width="80" height="2" rx="1" fill="rgba(255,255,255,0.08)"/>
-        <rect x="30" y="30" width="95" height="1.5" rx="1" fill="rgba(255,255,255,0.05)"/>
-        <circle cx="86" cy="105" r="38" fill="rgba(37,99,255,0.08)" stroke="rgba(37,99,255,0.2)" stroke-width="1"/>
-        <circle cx="86" cy="105" r="26" fill="rgba(37,99,255,0.12)" stroke="rgba(79,142,255,0.4)" stroke-width="1"/>
-        <polygon points="80,95 80,115 98,105" fill="#4f8eff" opacity="0.9"/>
-        <rect x="30" y="164" width="112" height="1.5" rx="1" fill="url(#glowLine)" opacity="0.6"/>
-        <text x="86" y="181" font-family="'DM Sans', sans-serif" font-size="8" fill="rgba(255,255,255,0.3)" text-anchor="middle">SKILLBYTE GUIDE</text>
+    <div id="inf-stage" role="img" aria-label="Infinity loop animation showing the course trap cycle">
+      <svg id="inf-svg" viewBox="0 0 720 480" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path id="lem-base" fill="none" stroke="rgba(255,255,255,0.055)" stroke-width="1.5"/>
+        <path id="lem-dash" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="1" stroke-dasharray="5 9"/>
+        <circle id="nd0" r="4" fill="#2563ff" stroke="#06070d" stroke-width="2.5"/>
+        <circle id="nd1" r="4" fill="#2563ff" stroke="#06070d" stroke-width="2.5"/>
+        <circle id="nd2" r="4" fill="#2563ff" stroke="#06070d" stroke-width="2.5"/>
+        <circle id="nd-ring" r="11" fill="none" stroke="rgba(37,99,255,0.4)" stroke-width="1" opacity="0"/>
+        <g id="lbl0" class="lbl-g" opacity="0"><text id="l0t" font-family="'Syne',sans-serif" font-size="14" font-weight="700" fill="#fff"/><text id="l0s" font-family="'DM Sans',sans-serif" font-size="11" fill="rgba(255,255,255,0.3)"/></g>
+        <g id="lbl1" class="lbl-g" opacity="0"><text id="l1t" font-family="'Syne',sans-serif" font-size="14" font-weight="700" fill="#fff"/><text id="l1s" font-family="'DM Sans',sans-serif" font-size="11" fill="rgba(255,255,255,0.3)"/></g>
+        <g id="lbl2" class="lbl-g" opacity="0"><text id="l2t" font-family="'Syne',sans-serif" font-size="14" font-weight="700" fill="#fff"/><text id="l2s" font-family="'DM Sans',sans-serif" font-size="11" fill="rgba(255,255,255,0.3)"/></g>
+        <circle id="traveller" r="4.5" fill="#ffffff"/>
       </svg>
+    </div>
 
-      <div class="sb-price-tag">
-        <span class="sb-price-old">$29</span>
-        <span class="sb-price-new">$9</span>
+    <div class="scroll-down-icon" aria-hidden="true">
+      <span class="scroll-text">Here's the Escape</span>
+      <div class="chevron-group"><span></span><span></span></div>
+    </div>
+  </section>
+
+  <!-- FEATURED / NICHE CARDS -->
+  <section id="featured" aria-labelledby="featured-heading">
+    <p class="sb-eyebrow reveal-item">Browse by niche</p>
+    <h2 class="sb-section-title reveal-item" id="featured-heading">Pick your field. Start doing.</h2>
+
+    <div class="nc-grid reveal-item">
+      <a class="nc-card nc-ai" href="https://youtube.com" target="_blank" rel="noopener noreferrer" aria-label="Browse AI & Automation guides — 12 guides available">
+        <div class="nc-glow" aria-hidden="true"></div>
+        <div class="nc-particles" aria-hidden="true"></div>
+        <div class="nc-icon" aria-hidden="true">
+          <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="24" cy="24" r="10" stroke="currentColor" stroke-width="2.5"/>
+            <circle cx="24" cy="24" r="3.5" fill="currentColor"/>
+            <path d="M24 6v6M24 36v6M6 24h6M36 24h6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+            <path d="M11.5 11.5l4.2 4.2M32.3 32.3l4.2 4.2M36.5 11.5l-4.2 4.2M15.7 32.3l-4.2 4.2" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+          </svg>
+        </div>
+        <div class="nc-label">AI &amp; Automation</div>
+        <div class="nc-count">12 guides</div>
+        <div class="nc-hover-body">
+          <p>Prompt engineering, AI workflows, tools that save you 10hrs/week.</p>
+          <span class="nc-cta-btn">Browse AI Guides →</span>
+        </div>
+        <div class="nc-shine" aria-hidden="true"></div>
+      </a>
+
+      <a class="nc-card nc-mkt" href="https://youtube.com" target="_blank" rel="noopener noreferrer" aria-label="Browse Marketing guides — 9 guides available">
+        <div class="nc-glow" aria-hidden="true"></div>
+        <div class="nc-particles" aria-hidden="true"></div>
+        <div class="nc-icon" aria-hidden="true">
+          <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M8 34 L18 22 L26 29 L36 14 L40 18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="18" cy="22" r="2.5" fill="currentColor"/>
+            <circle cx="26" cy="29" r="2.5" fill="currentColor"/>
+            <circle cx="36" cy="14" r="2.5" fill="currentColor"/>
+            <path d="M8 40h32" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity="0.4"/>
+          </svg>
+        </div>
+        <div class="nc-label">Marketing</div>
+        <div class="nc-count">9 guides</div>
+        <div class="nc-hover-body">
+          <p>Funnels, email, paid ads — grow without a big team or budget.</p>
+          <span class="nc-cta-btn">Browse Marketing →</span>
+        </div>
+        <div class="nc-shine" aria-hidden="true"></div>
+      </a>
+
+      <a class="nc-card nc-seo" href="https://youtube.com" target="_blank" rel="noopener noreferrer" aria-label="Browse SMM & SEO guides — 8 guides available">
+        <div class="nc-glow" aria-hidden="true"></div>
+        <div class="nc-particles" aria-hidden="true"></div>
+        <div class="nc-icon" aria-hidden="true">
+          <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="20" cy="20" r="11" stroke="currentColor" stroke-width="2.5"/>
+            <path d="M28.5 28.5L40 40" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+            <path d="M15 20h10M20 15v10" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity="0.7"/>
+          </svg>
+        </div>
+        <div class="nc-label">SMM &amp; SEO</div>
+        <div class="nc-count">8 guides</div>
+        <div class="nc-hover-body">
+          <p>Rank higher, grow socials, and turn content into compounding traffic.</p>
+          <span class="nc-cta-btn">Browse SMM &amp; SEO →</span>
+        </div>
+        <div class="nc-shine" aria-hidden="true"></div>
+      </a>
+    </div>
+  </section>
+
+  <!-- ABOUT / COMPANY -->
+  <section id="about" aria-labelledby="about-heading">
+    <div class="ab-left reveal-item">
+      <div class="ab-img-wrap" id="abImgWrap">
+        <div class="ab-glow-ring" aria-hidden="true"></div>
+        <div class="ab-orb ab-orb1" aria-hidden="true"></div>
+        <div class="ab-orb ab-orb2" aria-hidden="true"></div>
+        <svg class="ab-illustration" viewBox="0 0 320 360" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Illustration of Skillbyte guide books" role="img">
+          <defs>
+            <linearGradient id="bk1top" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#1e3a8a"/><stop offset="100%" stop-color="#1e40af"/></linearGradient>
+            <linearGradient id="bk2top" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#3730a3"/><stop offset="100%" stop-color="#4338ca"/></linearGradient>
+            <linearGradient id="bk3top" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#1d4ed8"/><stop offset="100%" stop-color="#2563eb"/></linearGradient>
+            <linearGradient id="glowG" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#3b82f6" stop-opacity="0"/><stop offset="50%" stop-color="#60a5fa"/><stop offset="100%" stop-color="#818cf8" stop-opacity="0"/></linearGradient>
+            <filter id="glow1"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          </defs>
+          <g class="ab-book ab-book3">
+            <rect x="60" y="210" width="200" height="14" rx="2" fill="#0f172a" opacity="0.6"/>
+            <rect x="55" y="140" width="16" height="84" rx="2" fill="#0c1a4a"/>
+            <rect x="71" y="134" width="194" height="90" rx="4" fill="url(#bk3top)"/>
+            <rect x="71" y="134" width="194" height="90" rx="4" fill="none" stroke="rgba(96,165,250,0.3)" stroke-width="1"/>
+            <rect x="85" y="148" width="120" height="2" rx="1" fill="url(#glowG)" opacity="0.7"/>
+            <rect x="85" y="154" width="80" height="1.5" rx="1" fill="rgba(255,255,255,0.1)"/>
+            <text x="168" y="200" font-family="'DM Sans',sans-serif" font-size="9" font-weight="600" fill="rgba(255,255,255,0.5)" text-anchor="middle">SKILLBYTE</text>
+          </g>
+          <g class="ab-book ab-book2">
+            <rect x="50" y="168" width="220" height="14" rx="2" fill="#0f172a" opacity="0.6"/>
+            <rect x="44" y="96" width="16" height="86" rx="2" fill="#1e1b4b"/>
+            <rect x="60" y="90" width="210" height="92" rx="4" fill="url(#bk2top)"/>
+            <rect x="60" y="90" width="210" height="92" rx="4" fill="none" stroke="rgba(129,140,248,0.35)" stroke-width="1"/>
+            <rect x="76" y="104" width="130" height="2" rx="1" fill="url(#glowG)" opacity="0.8"/>
+            <rect x="76" y="110" width="90" height="1.5" rx="1" fill="rgba(255,255,255,0.1)"/>
+            <circle cx="165" cy="144" r="18" fill="rgba(67,56,202,0.4)" stroke="rgba(129,140,248,0.3)" stroke-width="1"/>
+            <polygon points="161,137 161,151 173,144" fill="#818cf8" opacity="0.9"/>
+            <text x="165" y="174" font-family="'DM Sans',sans-serif" font-size="9" font-weight="600" fill="rgba(255,255,255,0.5)" text-anchor="middle">SKILLBYTE</text>
+          </g>
+          <g class="ab-book ab-book1">
+            <rect x="40" y="126" width="240" height="14" rx="2" fill="#0f172a" opacity="0.7"/>
+            <rect x="33" y="50" width="17" height="90" rx="2" fill="#1e3a8a"/>
+            <rect x="50" y="44" width="230" height="96" rx="4" fill="url(#bk1top)" filter="url(#glow1)"/>
+            <rect x="50" y="44" width="230" height="96" rx="4" fill="none" stroke="rgba(96,165,250,0.45)" stroke-width="1.5"/>
+            <rect x="68" y="58" width="150" height="2.5" rx="1" fill="url(#glowG)"/>
+            <rect x="68" y="65" width="100" height="1.5" rx="1" fill="rgba(255,255,255,0.12)"/>
+            <rect x="68" y="70" width="120" height="1.5" rx="1" fill="rgba(255,255,255,0.07)"/>
+            <circle cx="165" cy="106" r="22" fill="rgba(30,58,138,0.5)" stroke="rgba(96,165,250,0.4)" stroke-width="1.5"/>
+            <circle cx="165" cy="106" r="14" fill="rgba(37,99,235,0.4)" stroke="rgba(147,187,255,0.5)" stroke-width="1"/>
+            <polygon points="161,99 161,113 174,106" fill="#93bbff"/>
+            <rect x="68" y="128" width="194" height="2" rx="1" fill="url(#glowG)" opacity="0.5"/>
+            <text x="165" y="132" font-family="'DM Sans',sans-serif" font-size="8" font-weight="600" fill="rgba(255,255,255,0.5)" text-anchor="middle">SKILLBYTE GUIDE</text>
+          </g>
+          <g class="ab-badge-float ab-badge-float1" aria-hidden="true"><rect x="210" y="22" width="100" height="34" rx="12" fill="rgba(37,99,235,0.35)" stroke="rgba(96,165,250,0.7)" stroke-width="1.5"/><text x="260" y="44" font-family="'DM Sans',sans-serif" font-size="13" font-weight="700" fill="#ffffff" text-anchor="middle">12 Guides</text></g>
+          <g class="ab-badge-float ab-badge-float2" aria-hidden="true"><rect x="4" y="52" width="90" height="34" rx="12" fill="rgba(67,56,202,0.35)" stroke="rgba(129,140,248,0.7)" stroke-width="1.5"/><text x="49" y="74" font-family="'DM Sans',sans-serif" font-size="13" font-weight="700" fill="#ffffff" text-anchor="middle">★ 4.9 / 5</text></g>
+          <g class="ab-badge-float ab-badge-float3" aria-hidden="true"><rect x="190" y="234" width="116" height="34" rx="12" fill="rgba(16,185,129,0.3)" stroke="rgba(52,211,153,0.65)" stroke-width="1.5"/><text x="248" y="256" font-family="'DM Sans',sans-serif" font-size="13" font-weight="700" fill="#ffffff" text-anchor="middle">840+ readers</text></g>
+          <rect x="30" y="222" width="260" height="1" rx="1" fill="url(#glowG)" opacity="0.4"/>
+        </svg>
+        <div class="ab-ripple-area" id="abRipple" aria-hidden="true"></div>
       </div>
     </div>
 
-    <div class="sb-card-body">
-      <p class="sb-card-tag">AI Tools · 45 min read</p>
-      <h3 class="sb-card-title">Master AI Prompting<br><span>in One Weekend.</span></h3>
+    <div class="ab-right reveal-item">
+      <p class="ab-eyebrow">About Skillbyte</p>
+      <h2 class="ab-heading" id="about-heading">We cut the fluff.<br><span>You get results.</span></h2>
+      <p class="ab-desc">Skillbyte was built for people who are done watching 8-hour courses and still feeling stuck. Every guide we publish is battle-tested, ruthlessly edited, and designed to get you from zero to doing — in a single sitting.</p>
+      <ul class="ab-stats" aria-label="Skillbyte statistics">
+        <li><span class="ab-stat-num">12+</span><span class="ab-stat-label">Guides published</span></li>
+        <li><span class="ab-stat-num">840+</span><span class="ab-stat-label">Active readers</span></li>
+        <li><span class="ab-stat-num">45min</span><span class="ab-stat-label">Avg. read time</span></li>
+      </ul>
+      <div class="ab-cta-row">
+        <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" class="ab-cta-btn">Explore all guides →</a>
+        <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" class="ab-cta-link">Our story ↗</a>
+      </div>
+    </div>
+  </section>
 
-      <ul class="sb-pointers">
-        <li class="sb-pointer">
-          <div class="sb-pointer-dot"></div>
-          <span>No bloated theory — jump straight to frameworks you'll use tomorrow</span>
+  <!-- TESTIMONIALS -->
+  <section id="testimonials" aria-labelledby="testimonials-heading">
+    <p class="tm-eyebrow reveal-item">What readers say</p>
+    <h2 class="tm-title reveal-item" id="testimonials-heading">Real results. Real people.</h2>
+    <p class="tm-sub reveal-item">Drag the card or hit next — hear it from them.</p>
+    <div class="tm-stack-wrap" role="region" aria-label="Testimonial cards"></div>
+    <div class="tm-controls" role="group" aria-label="Testimonial navigation">
+      <button class="tm-btn" id="tm-prev" aria-label="Previous testimonial">←</button>
+      <div class="tm-dots" role="tablist" aria-label="Testimonial indicators"></div>
+      <button class="tm-btn" id="tm-next" aria-label="Next testimonial">→</button>
+    </div>
+  </section>
+
+  <!-- AGENCY / BUSINESS SERVICES -->
+  <section id="agency" aria-labelledby="agency-heading">
+    <div class="agency-left reveal-item">
+      <p class="ag-eyebrow">Skillbyte Agency</p>
+      <h2 class="ag-heading" id="agency-heading">We build growth<br><span>systems for businesses.</span></h2>
+      <p class="ag-desc">Beyond guides — Skillbyte runs a boutique agency helping businesses scale with AI-powered marketing, automation, and strategic content. If you're serious about growth, let's talk.</p>
+
+      <ul class="ag-services">
+        <li>
+          <div class="ag-service-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div><strong>AI &amp; Automation</strong><p>Cut costs, automate workflows, and outpace competitors with custom AI systems.</p></div>
         </li>
-        <li class="sb-pointer">
-          <div class="sb-pointer-dot"></div>
-          <span>12 plug-and-play prompt templates for real work scenarios</span>
+        <li>
+          <div class="ag-service-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M22 12h-4l-3 9L9 3l-3 9H2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div><strong>Growth Marketing</strong><p>Data-driven funnels, paid ads, and SEO strategies that deliver measurable ROI.</p></div>
         </li>
-        <li class="sb-pointer">
-          <div class="sb-pointer-dot"></div>
-          <span>Works with ChatGPT, Claude, Gemini — any model, any workflow</span>
-        </li>
-        <li class="sb-pointer">
-          <div class="sb-pointer-dot"></div>
-          <span>One-time purchase. Lifetime updates. Zero subscription.</span>
+        <li>
+          <div class="ag-service-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.8"/><path d="M12 8v4l3 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+          <div><strong>Content &amp; Brand</strong><p>Authority-building content systems that attract the right clients on autopilot.</p></div>
         </li>
       </ul>
 
-      <div class="sb-divider"></div>
-
-      <div class="sb-cta-row">
-        <button class="sb-cta-btn">Get the Guide →</button>
-        <button class="sb-cta-link">Preview free chapter ↗</button>
-      </div>
-
-      <div class="sb-rating">
-        <span class="sb-stars">★★★★★</span>
-        <span>4.9 from 840 readers</span>
+      <div class="ag-cta-row">
+        <a href="#ag-form" class="ag-cta-btn" onclick="document.getElementById('ag-form').scrollIntoView({behavior:'smooth'});return false;">Book a Free Call →</a>
+        <p class="ag-trust">Trusted by 20+ businesses worldwide</p>
       </div>
     </div>
-  </div>
-</section>
 
-<script>
-(function(){
-  // 1. HERO CANVAS DOTS
-  const canvas = document.getElementById('bg'), ctx = canvas.getContext('2d');
-  let dots = [], W, H, mx = -999, my = -999, pulse = 0, pulseX = 0, pulseY = 0;
-  const clinkSound = new Audio('https://www.soundjay.com/buttons/button-10.mp3');
-  clinkSound.volume = 0.4;
+    <div class="agency-right reveal-item" id="ag-form">
+      <div class="ag-form-card">
+        <div class="ag-form-header">
+          <h3>Let's talk about your business</h3>
+          <p>Fill in the details and we'll be in touch within 24 hours.</p>
+        </div>
 
-  function resize() {
-    W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight;
-    dots = []; const spacing = 35;
-    for (let x = spacing / 2; x < W; x += spacing)
-      for (let y = spacing / 2; y < H; y += spacing)
-        dots.push({ x, y, baseO: 0.04 + Math.random() * 0.04 });
-  }
-  function drawDots() {
-    ctx.clearRect(0, 0, W, H);
-    dots.forEach(d => {
-      let distM = Math.hypot(d.x - mx, d.y - my);
-      let hover = distM < 160 ? (1 - distM / 160) * 0.5 : 0;
-      let wave = 0;
-      if (pulse > 0) {
-        let distB = Math.hypot(d.x - pulseX, d.y - pulseY);
-        let waveR = pulse * 1200, waveD = Math.abs(distB - waveR);
-        if (waveD < 100) wave = (1 - waveD / 100) * 0.5 * (1 - pulse);
-      }
-      ctx.beginPath(); ctx.arc(d.x, d.y, 1.2, 0, 7);
-      ctx.fillStyle = `rgba(100, 160, 255, ${d.baseO + hover + wave})`;
-      ctx.fill();
-    });
-    if (pulse > 0) { pulse += 0.015; if (pulse > 1) pulse = 0; }
-    requestAnimationFrame(drawDots);
-  }
-  window.addEventListener('resize', resize);
-  window.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
-  resize(); drawDots();
+        <div id="ag-form-body">
+          <div class="ag-field-row">
+            <div class="ag-field">
+              <label for="ag-name">Full Name *</label>
+              <input type="text" id="ag-name" name="name" placeholder="Alex Johnson" autocomplete="name" aria-required="true">
+            </div>
+            <div class="ag-field">
+              <label for="ag-biz">Business Name</label>
+              <input type="text" id="ag-biz" name="organization" placeholder="Acme Co." autocomplete="organization">
+            </div>
+          </div>
 
-  // 2. HERO ANIMATION
-  const anim = (dur, fn) => new Promise(res => {
-    const s = performance.now();
-    function step(now) {
-      let p = Math.min((now - s) / dur, 1);
-      fn(p); p < 1 ? requestAnimationFrame(step) : res();
-    }
-    requestAnimationFrame(step);
-  });
+          <div class="ag-field-row">
+            <div class="ag-field ag-field-phone">
+              <label for="ag-phone">Phone Number *</label>
+              <div class="ag-phone-wrap">
+                <select id="ag-country" name="country-code" class="ag-country-select" aria-label="Country code">
+                  <option value="+93">🇦🇫 +93</option><option value="+355">🇦🇱 +355</option><option value="+213">🇩🇿 +213</option><option value="+376">🇦🇩 +376</option><option value="+244">🇦🇴 +244</option><option value="+54">🇦🇷 +54</option><option value="+374">🇦🇲 +374</option><option value="+61">🇦🇺 +61</option><option value="+43">🇦🇹 +43</option><option value="+994">🇦🇿 +994</option><option value="+973">🇧🇭 +973</option><option value="+880">🇧🇩 +880</option><option value="+375">🇧🇾 +375</option><option value="+32">🇧🇪 +32</option><option value="+501">🇧🇿 +501</option><option value="+229">🇧🇯 +229</option><option value="+975">🇧🇹 +975</option><option value="+591">🇧🇴 +591</option><option value="+387">🇧🇦 +387</option><option value="+267">🇧🇼 +267</option><option value="+55">🇧🇷 +55</option><option value="+673">🇧🇳 +673</option><option value="+359">🇧🇬 +359</option><option value="+226">🇧🇫 +226</option><option value="+257">🇧🇮 +257</option><option value="+855">🇰🇭 +855</option><option value="+237">🇨🇲 +237</option><option value="+1">🇨🇦 +1</option><option value="+238">🇨🇻 +238</option><option value="+236">🇨🇫 +236</option><option value="+235">🇹🇩 +235</option><option value="+56">🇨🇱 +56</option><option value="+86">🇨🇳 +86</option><option value="+57">🇨🇴 +57</option><option value="+269">🇰🇲 +269</option><option value="+242">🇨🇬 +242</option><option value="+506">🇨🇷 +506</option><option value="+385">🇭🇷 +385</option><option value="+53">🇨🇺 +53</option><option value="+357">🇨🇾 +357</option><option value="+420">🇨🇿 +420</option><option value="+45">🇩🇰 +45</option><option value="+253">🇩🇯 +253</option><option value="+593">🇪🇨 +593</option><option value="+20">🇪🇬 +20</option><option value="+503">🇸🇻 +503</option><option value="+240">🇬🇶 +240</option><option value="+291">🇪🇷 +291</option><option value="+372">🇪🇪 +372</option><option value="+251">🇪🇹 +251</option><option value="+679">🇫🇯 +679</option><option value="+358">🇫🇮 +358</option><option value="+33">🇫🇷 +33</option><option value="+241">🇬🇦 +241</option><option value="+220">🇬🇲 +220</option><option value="+995">🇬🇪 +995</option><option value="+49">🇩🇪 +49</option><option value="+233">🇬🇭 +233</option><option value="+30">🇬🇷 +30</option><option value="+502">🇬🇹 +502</option><option value="+224">🇬🇳 +224</option><option value="+245">🇬🇼 +245</option><option value="+592">🇬🇾 +592</option><option value="+509">🇭🇹 +509</option><option value="+504">🇭🇳 +504</option><option value="+36">🇭🇺 +36</option><option value="+354">🇮🇸 +354</option><option value="+91">🇮🇳 +91</option><option value="+62">🇮🇩 +62</option><option value="+98">🇮🇷 +98</option><option value="+964">🇮🇶 +964</option><option value="+353">🇮🇪 +353</option><option value="+972">🇮🇱 +972</option><option value="+39">🇮🇹 +39</option><option value="+1876">🇯🇲 +1876</option><option value="+81">🇯🇵 +81</option><option value="+962">🇯🇴 +962</option><option value="+7">🇰🇿 +7</option><option value="+254">🇰🇪 +254</option><option value="+686">🇰🇮 +686</option><option value="+383">🇽🇰 +383</option><option value="+965">🇰🇼 +965</option><option value="+996">🇰🇬 +996</option><option value="+856">🇱🇦 +856</option><option value="+371">🇱🇻 +371</option><option value="+961">🇱🇧 +961</option><option value="+266">🇱🇸 +266</option><option value="+231">🇱🇷 +231</option><option value="+218">🇱🇾 +218</option><option value="+423">🇱🇮 +423</option><option value="+370">🇱🇹 +370</option><option value="+352">🇱🇺 +352</option><option value="+261">🇲🇬 +261</option><option value="+265">🇲🇼 +265</option><option value="+60">🇲🇾 +60</option><option value="+960">🇲🇻 +960</option><option value="+223">🇲🇱 +223</option><option value="+356">🇲🇹 +356</option><option value="+692">🇲🇭 +692</option><option value="+222">🇲🇷 +222</option><option value="+230">🇲🇺 +230</option><option value="+52">🇲🇽 +52</option><option value="+691">🇫🇲 +691</option><option value="+373">🇲🇩 +373</option><option value="+377">🇲🇨 +377</option><option value="+976">🇲🇳 +976</option><option value="+382">🇲🇪 +382</option><option value="+212">🇲🇦 +212</option><option value="+258">🇲🇿 +258</option><option value="+264">🇳🇦 +264</option><option value="+977" selected>🇳🇵 +977</option><option value="+31">🇳🇱 +31</option><option value="+64">🇳🇿 +64</option><option value="+505">🇳🇮 +505</option><option value="+227">🇳🇪 +227</option><option value="+234">🇳🇬 +234</option><option value="+47">🇳🇴 +47</option><option value="+968">🇴🇲 +968</option><option value="+92">🇵🇰 +92</option><option value="+680">🇵🇼 +680</option><option value="+507">🇵🇦 +507</option><option value="+675">🇵🇬 +675</option><option value="+595">🇵🇾 +595</option><option value="+51">🇵🇪 +51</option><option value="+63">🇵🇭 +63</option><option value="+48">🇵🇱 +48</option><option value="+351">🇵🇹 +351</option><option value="+974">🇶🇦 +974</option><option value="+40">🇷🇴 +40</option><option value="+7">🇷🇺 +7</option><option value="+250">🇷🇼 +250</option><option value="+1869">🇰🇳 +1869</option><option value="+1758">🇱🇨 +1758</option><option value="+1784">🇻🇨 +1784</option><option value="+685">🇼🇸 +685</option><option value="+378">🇸🇲 +378</option><option value="+239">🇸🇹 +239</option><option value="+966">🇸🇦 +966</option><option value="+221">🇸🇳 +221</option><option value="+381">🇷🇸 +381</option><option value="+232">🇸🇱 +232</option><option value="+65">🇸🇬 +65</option><option value="+421">🇸🇰 +421</option><option value="+386">🇸🇮 +386</option><option value="+677">🇸🇧 +677</option><option value="+252">🇸🇴 +252</option><option value="+27">🇿🇦 +27</option><option value="+211">🇸🇸 +211</option><option value="+34">🇪🇸 +34</option><option value="+94">🇱🇰 +94</option><option value="+249">🇸🇩 +249</option><option value="+597">🇸🇷 +597</option><option value="+268">🇸🇿 +268</option><option value="+46">🇸🇪 +46</option><option value="+41">🇨🇭 +41</option><option value="+963">🇸🇾 +963</option><option value="+886">🇹🇼 +886</option><option value="+992">🇹🇯 +992</option><option value="+255">🇹🇿 +255</option><option value="+66">🇹🇭 +66</option><option value="+670">🇹🇱 +670</option><option value="+228">🇹🇬 +228</option><option value="+676">🇹🇴 +676</option><option value="+1868">🇹🇹 +1868</option><option value="+216">🇹🇳 +216</option><option value="+90">🇹🇷 +90</option><option value="+993">🇹🇲 +993</option><option value="+688">🇹🇻 +688</option><option value="+256">🇺🇬 +256</option><option value="+380">🇺🇦 +380</option><option value="+971">🇦🇪 +971</option><option value="+44">🇬🇧 +44</option><option value="+1">🇺🇸 +1</option><option value="+598">🇺🇾 +598</option><option value="+998">🇺🇿 +998</option><option value="+678">🇻🇺 +678</option><option value="+379">🇻🇦 +379</option><option value="+58">🇻🇪 +58</option><option value="+84">🇻🇳 +84</option><option value="+967">🇾🇪 +967</option><option value="+260">🇿🇲 +260</option><option value="+263">🇿🇼 +263</option>
+                </select>
+                <input type="tel" id="ag-phone" name="phone" placeholder="98XXXXXXXX" class="ag-phone-input" autocomplete="tel-national" aria-required="true">
+              </div>
+            </div>
+            <div class="ag-field">
+              <label for="ag-email">Email *</label>
+              <input type="email" id="ag-email" name="email" placeholder="alex@company.com" autocomplete="email" aria-required="true">
+            </div>
+          </div>
 
-  async function runHero() {
-    document.getElementById('ey').classList.add('show');
-    for (let i = 0; i < 5; i++) {
-      await new Promise(r => setTimeout(r, 90));
-      document.getElementById('w' + i).classList.add('show');
-    }
-    document.getElementById('sub').classList.add('show');
-    document.getElementById('btns').classList.add('show');
-    const hL = document.getElementById('hL'), hR = document.getElementById('hR');
-    await anim(1000, p => {
-      let x = 60 * (1 - p);
-      hL.style.transform = `translateX(${-x}px)`;
-      hR.style.transform = `translateX(${x}px)`;
-      hL.style.opacity = hR.style.opacity = p;
-    });
-    clinkSound.play().catch(() => {});
-    document.getElementById('seam').style.opacity = 0.5;
-    const r = document.getElementById('bulb').getBoundingClientRect();
-    pulseX = r.left + r.width / 2; pulseY = r.top + r.height / 2; pulse = 0.01;
-    anim(500, p => {
-      document.getElementById('ig0').setAttribute('stop-opacity', p);
-      document.getElementById('ig1').setAttribute('stop-opacity', p * 0.6);
-      document.getElementById('bloom').style.opacity = p;
-      document.getElementById('rays').style.opacity = p;
-    });
-  }
-  setTimeout(runHero, 600);
+          <div class="ag-field">
+            <label for="ag-niche">Business Niche *</label>
+            <select id="ag-niche" name="niche" aria-required="true">
+              <option value="">Select your industry...</option>
+              <option>E-commerce / Retail</option><option>SaaS / Technology</option><option>Coaching / Consulting</option><option>Real Estate</option><option>Healthcare / Wellness</option><option>Finance / Fintech</option><option>Education / Online Courses</option><option>Marketing / Advertising Agency</option><option>Legal / Professional Services</option><option>Hospitality / Travel</option><option>Manufacturing / B2B</option><option>Non-profit / NGO</option><option>Other</option>
+            </select>
+          </div>
 
-  // 3. INFINITY LOOP
-  const cx = 360, cy = 220, a = 400;
-  function lem(t) {
-    const d = 1 + Math.sin(t) * Math.sin(t);
-    return { x: cx + a * Math.cos(t) / d, y: cy + a * Math.sin(t) * Math.cos(t) / d };
-  }
-  function buildPath() {
-    let d = '';
-    for (let i = 0; i <= 500; i++) {
-      const t = (i / 500) * 2 * Math.PI, p = lem(t);
-      d += (i === 0 ? 'M' : 'L') + p.x.toFixed(1) + ',' + p.y.toFixed(1);
-    }
-    return d + 'Z';
-  }
-  document.getElementById('lem-base').setAttribute('d', buildPath());
-  document.getElementById('lem-dash').setAttribute('d', buildPath());
+          <div class="ag-field">
+            <label>Primary Goal *</label>
+            <div class="ag-goal-grid" role="group" aria-label="Select your primary goal">
+              <button type="button" class="ag-goal-btn" data-val="More leads">📈 More Leads</button>
+              <button type="button" class="ag-goal-btn" data-val="AI automation">🤖 AI Automation</button>
+              <button type="button" class="ag-goal-btn" data-val="Brand authority">🏆 Brand Authority</button>
+              <button type="button" class="ag-goal-btn" data-val="Scale revenue">💰 Scale Revenue</button>
+              <button type="button" class="ag-goal-btn" data-val="Content system">✍️ Content System</button>
+              <button type="button" class="ag-goal-btn" data-val="Other">🎯 Other</button>
+            </div>
+          </div>
 
-  const nodes = [
-    { label: 'Watch 40+ hours',    sub: 'Taking notes that never get read', angle: Math.PI * 0.5, offX: 0,   offY: -22, anchor: 'middle' },
-    { label: 'Buy another course', sub: '"Surely this one works..."',        angle: Math.PI,       offX: -22, offY: 0,   anchor: 'end'    },
-    { label: 'Forget it all',      sub: 'Back to square one',                angle: 0,             offX: 22,  offY: 0,   anchor: 'start'  },
-  ];
-  nodes.forEach((n, i) => {
-    const p = lem(n.angle); n.x = p.x; n.y = p.y;
-    document.getElementById('nd' + i).setAttribute('cx', p.x);
-    document.getElementById('nd' + i).setAttribute('cy', p.y);
-    const tx = p.x + n.offX * 2.6, ty = p.y + n.offY * 2.4;
-    const t = document.getElementById('l' + i + 't'), s = document.getElementById('l' + i + 's');
-    t.setAttribute('x', tx); t.setAttribute('y', ty); t.setAttribute('text-anchor', n.anchor); t.setAttribute('dominant-baseline', 'central');
-    s.setAttribute('x', tx); s.setAttribute('y', ty + 17); s.setAttribute('text-anchor', n.anchor);
-    t.textContent = n.label; s.textContent = n.sub;
-  });
+          <div class="ag-field">
+            <label for="ag-revenue">Monthly Revenue Range</label>
+            <select id="ag-revenue" name="revenue">
+              <option value="">Prefer not to say</option>
+              <option>Pre-revenue / Startup</option><option>$0 – $5k/mo</option><option>$5k – $20k/mo</option><option>$20k – $100k/mo</option><option>$100k+/mo</option>
+            </select>
+          </div>
 
-  let doff = 0;
-  (function tickD() { doff -= 0.42; document.getElementById('lem-dash').style.strokeDashoffset = doff; requestAnimationFrame(tickD); })();
+          <div class="ag-field">
+            <label for="ag-msg">Tell us about your challenge</label>
+            <textarea id="ag-msg" name="message" rows="3" placeholder="What's your biggest bottleneck right now?"></textarea>
+          </div>
 
-  const trav = document.getElementById('traveller'), ring = document.getElementById('nd-ring');
-  let T = 0, activeNode = -1, fadeOutTimer = null;
-  (function animTravel() {
-    T += 0.04; const p = lem(T);
-    trav.setAttribute('cx', p.x); trav.setAttribute('cy', p.y);
-    let hit = -1;
-    nodes.forEach((n, i) => { if (Math.hypot(p.x - n.x, p.y - n.y) < 32) hit = i; });
-    if (hit !== -1) {
-      if (activeNode !== hit) {
-        if (fadeOutTimer) clearTimeout(fadeOutTimer);
-        if (activeNode !== -1) document.getElementById('lbl' + activeNode).style.opacity = '0';
-        activeNode = hit; document.getElementById('lbl' + hit).style.opacity = '1';
-        ring.setAttribute('cx', nodes[hit].x); ring.setAttribute('cy', nodes[hit].y); ring.style.opacity = '1';
-      }
-    } else if (activeNode !== -1) {
-      const prev = activeNode; activeNode = -1; ring.style.opacity = '0';
-      fadeOutTimer = setTimeout(() => { document.getElementById('lbl' + prev).style.opacity = '0'; }, 800);
-    }
-    requestAnimationFrame(animTravel);
-  })();
+          <button type="button" class="ag-submit-btn" id="ag-submit">
+            <span id="ag-btn-text">Book My Free Strategy Call →</span>
+          </button>
+          <p class="ag-disclaimer">No spam. No pressure. Just a focused 30-min call.</p>
+        </div>
 
-  // 4. SCROLL REVEAL — watches both #trap and #featured
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.querySelectorAll('.reveal-item').forEach((item, i) => {
-          setTimeout(() => item.classList.add('reveal-active'), i * 150);
-        });
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.15 });
+        <div id="ag-success" style="display:none;" class="ag-success-state" role="alert" aria-live="polite">
+          <div class="ag-success-icon" aria-hidden="true">✓</div>
+          <h3>You're booked in!</h3>
+          <p>We've received your details and will reach out within 24 hours to confirm your strategy call time.</p>
+          <p class="ag-success-sub">Check your inbox — we may send a quick confirmation email.</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-  document.querySelectorAll('#trap, #featured').forEach(el => observer.observe(el));
-})();
-</script>
+  <!-- JS deferred — non-blocking, parsed after HTML -->
+  <script src="main.js" defer></script>
 </body>
 </html>
