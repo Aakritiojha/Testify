@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Skillbyte | Break the Loop</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    /* GLOBAL & UTILS */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { background: #06070d; overflow-x: hidden; color: white; }
+
+    /* ─── HERO ─── */
+    #hero {
+      height: 100vh; width: 100%;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      position: relative; font-family: 'Syne', sans-serif;
+    }
+    #bg { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+
+    nav {
+      position: absolute; top: 0; left: 0; right: 0; z-index: 10;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 40px; height: 80px;
+    }
+    .logo { font-size: 18px; font-weight: 800; color: #f0f2fa; text-decoration: none; display: flex; align-items: center; gap: 7px; }
+    .logo-dot { width: 7px; height: 7px; border-radius: 50%; background: #2563ff; box-shadow: 0 0 10px rgba(37,99,255,0.8); }
+    .nav-links { display: flex; gap: 24px; list-style: none; }
+    .nav-links a { font-size: 13px; color: rgba(255,255,255,0.4); text-decoration: none; transition: 0.3s; font-family: 'DM Sans'; }
+    .nav-links a:hover { color: #fff; }
+
+    .bulb-wrap {
+      position: relative; z-index: 2; height: 240px; width: 200px;
+      display: flex; justify-content: center; align-items: center; margin-top: -40px;
+      cursor: pointer; transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .bulb-wrap:hover { transform: scale(1.08); }
+
+    .scroll-down-icon {
+      position: absolute; bottom: 50px; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center;
+      z-index: 10; animation: breathe 3s infinite ease-in-out;
+    }
+    .scroll-text {
+      font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 500;
+      letter-spacing: 0.25em; text-transform: uppercase;
+      color: rgba(255,255,255,0.45); margin-bottom: 12px;
+    }
+    .chevron-group { display: flex; flex-direction: column; align-items: center; }
+    .chevron-group span {
+      display: block; width: 14px; height: 14px;
+      border-bottom: 3px solid rgba(255,255,255,0.35);
+      border-right: 3px solid rgba(255,255,255,0.35);
+      transform: rotate(45deg); margin-top: -6px;
+    }
+
+    @keyframes breathe {
+      0%, 100% { opacity: 0.4; transform: translateX(-50%) translateY(0); }
+      50% { opacity: 0.9; transform: translateX(-50%) translateY(12px); }
+    }
+
+    #bloom {
+      position: absolute; top: 35%; left: 50%; transform: translate(-50%, -50%);
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, rgba(251,191,36,0.4) 0%, rgba(251,191,36,0.05) 60%, transparent 80%);
+      filter: blur(45px); z-index: 1; opacity: 0; pointer-events: none;
+    }
+
+    svg#bulb { width: 120px; height: 200px; overflow: visible; }
+    #hL, #hR { opacity: 0; }
+
+    .content {
+      position: relative; z-index: 5; display: flex; flex-direction: column;
+      align-items: center; gap: 15px; text-align: center;
+    }
+    .eyebrow { font-size: 10px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: #4f8eff; opacity: 0; transform: translateY(10px); transition: 0.6s; }
+    .eyebrow.show { opacity: 1; transform: none; }
+    h1 { font-size: clamp(40px,6vw,72px); font-weight: 800; color: #f0f2fa; line-height: 1.1; display: flex; flex-wrap: wrap; justify-content: center; gap: 0 18px; }
+    .word { opacity: 0; transform: translateY(30px); transition: 0.7s cubic-bezier(0.2,0,0.2,1); }
+    .word.show { opacity: 1; transform: none; }
+    .word.accent { background: linear-gradient(135deg,#4f8eff 20%,#7c3aed 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .sub { font-size: 16px; color: rgba(255,255,255,0.3); max-width: 440px; font-family: 'DM Sans'; opacity: 0; transform: translateY(15px); transition: 0.6s; }
+    .sub.show { opacity: 1; transform: none; }
+    .btns { display: flex; gap: 15px; margin-top: 15px; opacity: 0; transform: translateY(10px); transition: 0.6s; }
+    .btns.show { opacity: 1; transform: none; }
+
+    .bp { padding: 14px 30px; border-radius: 12px; background: #2563ff; color: #fff; border: none; font-weight: 600; cursor: pointer; transition: 0.3s; font-family: 'DM Sans'; }
+    .bp:hover { background: #3b7fff; transform: translateY(-2px); box-shadow: 0 10px 20px rgba(37,99,255,0.3); }
+    .bs { padding: 14px 24px; border-radius: 12px; background: transparent; color: rgba(255,255,255,0.5); border: 1px solid rgba(255,255,255,0.1); cursor: pointer; transition: 0.3s; font-family: 'DM Sans'; font-size: 14px; }
+    .bs:hover { color: #fff; border-color: rgba(255,255,255,0.4); background: rgba(255,255,255,0.03); }
+
+    /* ─── TRAP SECTION ─── */
+    #trap {
+      background: #06070d; min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 120px 40px; position: relative;
+    }
+    .trap-content-wrapper {
+  text-align: center;
+  width: 100%; /* Ensures the wrapper fills the flex container for proper alignment */
+  z-index: 2;   /* Keeps text above the background dots/canvas */
+}
+    .trap-eyebrow { font-family: 'DM Sans', sans-serif; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: #4f8eff; margin-bottom: 14px; }
+    .trap-headline { font-family: 'Syne', sans-serif; font-size: clamp(28px,4vw,46px); font-weight: 800; color: #f0f2fa; margin-bottom: 8px; }
+    .trap-sub { font-family: 'DM Sans', sans-serif; font-size: 14px; color: rgba(255,255,255,0.4); margin-bottom: 60px; }
+    #inf-stage { width: 100%; max-width: 720px; }
+    #inf-svg { width: 100%; display: block; overflow: visible; }
+    .lbl-g { transition: opacity 0.55s ease; pointer-events: none; }
+
+    /* reveal animations */
+    .trap-headline { opacity: 0; transform: translateY(30px); transition: opacity 0.8s cubic-bezier(0.2,0,0.2,1), transform 0.8s cubic-bezier(0.2,0,0.2,1); }
+    .trap-eyebrow, .trap-sub { opacity: 0; transform: translateY(20px); transition: all 0.7s ease-out; }
+    .reveal-active { opacity: 1 !important; transform: translateY(0) !important; }
+    .reveal-item { opacity: 0; transform: translateY(20px); transition: all 0.8s cubic-bezier(0.2,0,0.2,1); }
+    .reveal-item.reveal-active { opacity: 1; transform: translateY(0); }
+
+    /* ─── CARD SECTION ─── */
+    #featured {
+      background: #06070d;
+      padding: 100px 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    .sb-eyebrow {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 11px; letter-spacing: 0.22em;
+      text-transform: uppercase; color: #4f8eff;
+      margin-bottom: 14px; text-align: center;
+    }
+    .sb-section-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(26px, 3.5vw, 42px);
+      font-weight: 800; color: #f0f2fa;
+      margin-bottom: 60px; text-align: center;
+    }
+
+    .sb-card {
+      position: relative; max-width: 860px; width: 100%;
+      border-radius: 22px; display: flex; overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      background: #0d0f1c; border: 1px solid rgba(255,255,255,0.06);
+    }
+    .sb-card::before {
+      content: ''; position: absolute; inset: -1px; border-radius: 23px;
+      background: linear-gradient(135deg, rgba(37,99,255,0.55) 0%, rgba(124,58,237,0.35) 50%, transparent 100%);
+      z-index: 0; opacity: 0; transition: opacity 0.45s ease;
+    }
+    .sb-card::after {
+      content: ''; position: absolute; inset: 1px;
+      border-radius: 21px; background: #0d0f1c; z-index: 1;
+    }
+    .sb-card:hover::before { opacity: 1; }
+    .sb-card:hover { transform: translateY(-6px); }
+    .sb-card:hover .sb-glow-orb { opacity: 1; }
+
+    .sb-glow-orb {
+      position: absolute; width: 420px; height: 320px;
+      top: 50%; left: 40%; transform: translate(-50%, -50%);
+      background: radial-gradient(ellipse, rgba(37,99,255,0.18) 0%, rgba(124,58,237,0.08) 50%, transparent 75%);
+      filter: blur(40px); z-index: 2; opacity: 0;
+      transition: opacity 0.5s ease; pointer-events: none;
+    }
+
+    .sb-card-image {
+      position: relative; z-index: 3; flex: 0 0 300px; min-height: 380px;
+      background: linear-gradient(160deg, #111427 0%, #0a0c1a 100%);
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden; border-right: 1px solid rgba(255,255,255,0.04);
+    }
+    .sb-img-bg-glow {
+      position: absolute; inset: 0;
+      background: radial-gradient(circle at 50% 60%, rgba(37,99,255,0.22) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .sb-book-mockup {
+      position: relative; z-index: 2; width: 150px;
+      filter: drop-shadow(0 20px 60px rgba(37,99,255,0.35)) drop-shadow(0 0 30px rgba(124,58,237,0.2));
+      transition: filter 0.4s ease, transform 0.4s ease;
+    }
+    .sb-card:hover .sb-book-mockup {
+      filter: drop-shadow(0 24px 80px rgba(37,99,255,0.55)) drop-shadow(0 0 50px rgba(124,58,237,0.35));
+      transform: scale(1.05) rotate(-1deg);
+    }
+
+    .sb-badge {
+      position: absolute; top: 18px; left: 18px; z-index: 4;
+      background: rgba(37,99,255,0.15); border: 1px solid rgba(37,99,255,0.4);
+      border-radius: 8px; padding: 5px 12px; font-size: 10px; font-weight: 500;
+      letter-spacing: 0.15em; text-transform: uppercase; color: #6fa8ff;
+      backdrop-filter: blur(8px);
+    }
+    .sb-price-tag {
+      position: absolute; bottom: 18px; left: 18px; z-index: 4;
+      background: rgba(10,12,26,0.85); border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 10px; padding: 6px 14px;
+      display: flex; align-items: baseline; gap: 4px; backdrop-filter: blur(8px);
+    }
+    .sb-price-old { font-size: 11px; color: rgba(255,255,255,0.25); text-decoration: line-through; }
+    .sb-price-new { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 800; color: #fff; }
+
+    .sb-card-body {
+      position: relative; z-index: 3; flex: 1;
+      padding: 40px 36px; display: flex; flex-direction: column;
+      justify-content: center; gap: 20px;
+    }
+    .sb-card-tag { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: #7c3aed; font-weight: 500; }
+    .sb-card-title { font-family: 'Syne', sans-serif; font-size: 24px; font-weight: 800; color: #f0f2fa; line-height: 1.2; }
+    .sb-card-title span { background: linear-gradient(135deg, #4f8eff 20%, #7c3aed 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+    .sb-pointers { display: flex; flex-direction: column; gap: 10px; list-style: none; padding: 0; margin: 0; }
+    .sb-pointer { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; color: rgba(255,255,255,0.55); line-height: 1.5; }
+    .sb-pointer-dot { width: 5px; height: 5px; border-radius: 50%; background: #2563ff; margin-top: 6px; flex-shrink: 0; box-shadow: 0 0 8px rgba(37,99,255,0.8); }
+
+    .sb-divider { height: 1px; background: rgba(255,255,255,0.05); margin: 4px 0; }
+
+    .sb-cta-row { display: flex; align-items: center; gap: 16px; margin-top: 4px; }
+    .sb-cta-btn {
+      padding: 13px 26px; border-radius: 12px; background: #2563ff;
+      color: #fff; border: none; font-weight: 600; font-size: 14px;
+      cursor: pointer; font-family: 'DM Sans', sans-serif;
+      transition: all 0.3s ease; position: relative; overflow: hidden;
+    }
+    .sb-cta-btn::after { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, transparent 40%, rgba(255,255,255,0.15) 100%); opacity: 0; transition: opacity 0.3s; }
+    .sb-cta-btn:hover { background: #3b7fff; transform: translateY(-2px); box-shadow: 0 10px 30px rgba(37,99,255,0.4), 0 0 60px rgba(37,99,255,0.15); }
+    .sb-cta-btn:hover::after { opacity: 1; }
+
+    .sb-cta-link {
+      font-size: 13px; color: rgba(255,255,255,0.3); cursor: pointer;
+      transition: color 0.3s; background: none; border: none;
+      font-family: 'DM Sans', sans-serif; display: flex; align-items: center; gap: 5px;
+    }
+    .sb-cta-link:hover { color: rgba(255,255,255,0.7); }
+
+    .sb-rating { display: flex; align-items: center; gap: 6px; font-size: 12px; color: rgba(255,255,255,0.35); }
+    .sb-stars { color: #fbbf24; font-size: 11px; letter-spacing: 1px; }
+
+    .sb-shimmer-edge {
+      position: absolute; top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent 0%, rgba(37,99,255,0.6) 40%, rgba(124,58,237,0.6) 60%, transparent 100%);
+      z-index: 5; opacity: 0; transition: opacity 0.4s ease;
+      border-radius: 22px 22px 0 0;
+    }
+    .sb-card:hover .sb-shimmer-edge { opacity: 1; }
+
+    @media (max-width: 620px) {
+      .sb-card { flex-direction: column; }
+      .sb-card-image { flex: 0 0 220px; min-height: 220px; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.04); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ─── HERO ─── -->
+<div id="hero">
+  <canvas id="bg"></canvas>
+  <nav>
+    <a href="#" class="logo"><span class="logo-dot"></span>skillbyte</a>
+    <ul class="nav-links">
+      <li><a href="#">Products</a></li>
+      <li><a href="#">How it works</a></li>
+      <li><a href="#">Pricing</a></li>
+    </ul>
+    <button class="bp" style="padding:10px 20px; font-size:13px">Get the Guide →</button>
+  </nav>
+
+  <div class="bulb-wrap" id="bulbTrigger">
+    <div id="bloom"></div>
+    <svg id="bulb" viewBox="0 0 140 220">
+      <defs>
+        <clipPath id="cL"><rect x="0" y="0" width="70" height="220"/></clipPath>
+        <clipPath id="cR"><rect x="70" y="0" width="70" height="220"/></clipPath>
+        <radialGradient id="ig" cx="50%" cy="40%" r="50%">
+          <stop offset="0%" stop-color="#fff9c4" stop-opacity="0" id="ig0"/>
+          <stop offset="100%" stop-color="#fbbf24" stop-opacity="0" id="ig1"/>
+        </radialGradient>
+      </defs>
+      <g id="hL" clip-path="url(#cL)">
+        <path d="M70,10 C36,10 8,38 8,72 C8,96 21,116 40,130 C44,133 46,138 46,143 L46,185 L70,185 Z" fill="url(#ig)" stroke="#fbbf24" stroke-opacity="0.3" stroke-width="2"/>
+        <path d="M70,145 L58,145 M70,155 L56,155 M70,165 L58,165" fill="none" stroke="#222" stroke-width="2.5" stroke-linecap="round"/>
+      </g>
+      <g id="hR" clip-path="url(#cR)">
+        <path d="M70,10 C104,10 132,38 132,72 C132,96 119,116 100,130 C96,133 94,138 94,143 L94,185 L70,185 Z" fill="url(#ig)" stroke="#fbbf24" stroke-opacity="0.3" stroke-width="2"/>
+        <path d="M70,145 L82,145 M70,155 L84,155 M70,165 L82,165" fill="none" stroke="#222" stroke-width="2.5" stroke-linecap="round"/>
+      </g>
+      <line id="seam" x1="70" y1="10" x2="70" y2="185" stroke="#fbbf24" stroke-width="1.5" opacity="0"/>
+      <g id="rays" opacity="0">
+        <line x1="70" y1="0" x2="70" y2="-15" stroke="#fbbf24" stroke-width="3" stroke-linecap="round"/>
+        <line x1="70" y1="0" x2="70" y2="-12" stroke="#fbbf24" stroke-width="3" stroke-linecap="round" transform="rotate(45 70 72)"/>
+        <line x1="70" y1="0" x2="70" y2="-12" stroke="#fbbf24" stroke-width="3" stroke-linecap="round" transform="rotate(-45 70 72)"/>
+        <line x1="70" y1="0" x2="70" y2="-12" stroke="#fbbf24" stroke-width="3" stroke-linecap="round" transform="rotate(90 70 72)"/>
+        <line x1="70" y1="0" x2="70" y2="-12" stroke="#fbbf24" stroke-width="3" stroke-linecap="round" transform="rotate(-90 70 72)"/>
+      </g>
+    </svg>
+  </div>
+
+  <div class="scroll-down-icon">
+    <span class="scroll-text">Scroll Down</span>
+    <div class="chevron-group"><span></span><span></span></div>
+  </div>
+
+  <div class="content">
+    <p class="eyebrow" id="ey">No more course fatigue</p>
+    <h1>
+      <span class="word" id="w0">Learn</span>
+      <span class="word" id="w1">it.</span>
+      <span class="word accent" id="w2">Use</span>
+      <span class="word accent" id="w3">it</span>
+      <span class="word accent" id="w4">today.</span>
+    </h1>
+    <p class="sub" id="sub">Bite-sized guides. Zero fluff. Straight to doing.</p>
+    <div class="btns" id="btns">
+      <button class="bp">Browse Guides — from $9</button>
+      <button class="bs" onclick="document.getElementById('trap').scrollIntoView({behavior:'smooth'})">See how it works ↓</button>
+    </div>
+  </div>
+</div>
+
+<!-- ─── TRAP / LOOP ─── -->
+<section id="trap">
+  <div class="trap-content-wrapper">
+    <p class="trap-eyebrow reveal-item">The course trap</p>
+    <h2 class="trap-headline reveal-item">Sound familiar?</h2>
+    <p class="trap-sub reveal-item">The same cycle. Every single time.</p>
+  </div>
+
+  <div id="inf-stage">
+    <svg id="inf-svg" viewBox="0 0 720 480" xmlns="http://www.w3.org/2000/svg">
+      <path id="lem-base" fill="none" stroke="rgba(255,255,255,0.055)" stroke-width="1.5"/>
+      <path id="lem-dash" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="1" stroke-dasharray="5 9"/>
+      <circle id="nd0" r="4" fill="#2563ff" stroke="#06070d" stroke-width="2.5"/>
+      <circle id="nd1" r="4" fill="#2563ff" stroke="#06070d" stroke-width="2.5"/>
+      <circle id="nd2" r="4" fill="#2563ff" stroke="#06070d" stroke-width="2.5"/>
+      <circle id="nd-ring" r="11" fill="none" stroke="rgba(37,99,255,0.4)" stroke-width="1" opacity="0"/>
+      <g id="lbl0" class="lbl-g" opacity="0"><text id="l0t" font-family="'Syne',sans-serif" font-size="14" font-weight="700" fill="#fff"/><text id="l0s" font-family="'DM Sans',sans-serif" font-size="11" fill="rgba(255,255,255,0.3)"/></g>
+      <g id="lbl1" class="lbl-g" opacity="0"><text id="l1t" font-family="'Syne',sans-serif" font-size="14" font-weight="700" fill="#fff"/><text id="l1s" font-family="'DM Sans',sans-serif" font-size="11" fill="rgba(255,255,255,0.3)"/></g>
+      <g id="lbl2" class="lbl-g" opacity="0"><text id="l2t" font-family="'Syne',sans-serif" font-size="14" font-weight="700" fill="#fff"/><text id="l2s" font-family="'DM Sans',sans-serif" font-size="11" fill="rgba(255,255,255,0.3)"/></g>
+      <circle id="traveller" r="4.5" fill="#ffffff"/>
+    </svg>
+  </div>
+
+  <div class="scroll-down-icon">
+    <span class="scroll-text">Here's the Escape</span>
+    <div class="chevron-group"><span></span><span></span></div>
+  </div>
+</section>
+
+<!-- ─── FEATURED CARD ─── -->
+<section id="featured" class="reveal-section">
+  <p class="sb-eyebrow reveal-item">Featured Guide</p>
+  <h2 class="sb-section-title reveal-item">Your shortcut to actually doing it.</h2>
+
+  <div class="sb-card reveal-item">
+    <div class="sb-shimmer-edge"></div>
+    <div class="sb-glow-orb"></div>
+
+    <div class="sb-card-image">
+      <div class="sb-img-bg-glow"></div>
+      <div class="sb-badge">New Drop</div>
+
+      <svg class="sb-book-mockup" viewBox="0 0 150 200" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="bookCover" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#1a2a5e"/>
+            <stop offset="100%" stop-color="#0d1433"/>
+          </linearGradient>
+          <linearGradient id="bookSpine" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#0a0f25"/>
+            <stop offset="100%" stop-color="#1a2a5e"/>
+          </linearGradient>
+          <linearGradient id="glowLine" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#2563ff" stop-opacity="0"/>
+            <stop offset="50%" stop-color="#4f8eff"/>
+            <stop offset="100%" stop-color="#7c3aed" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+        <rect x="18" y="4" width="132" height="192" rx="4" fill="url(#bookSpine)"/>
+        <rect x="22" y="0" width="128" height="200" rx="4" fill="url(#bookCover)"/>
+        <rect x="22" y="0" width="128" height="200" rx="4" fill="none" stroke="rgba(79,142,255,0.25)" stroke-width="1"/>
+        <rect x="30" y="16" width="112" height="2" rx="1" fill="url(#glowLine)" opacity="0.8"/>
+        <rect x="30" y="22" width="80" height="2" rx="1" fill="rgba(255,255,255,0.08)"/>
+        <rect x="30" y="30" width="95" height="1.5" rx="1" fill="rgba(255,255,255,0.05)"/>
+        <circle cx="86" cy="105" r="38" fill="rgba(37,99,255,0.08)" stroke="rgba(37,99,255,0.2)" stroke-width="1"/>
+        <circle cx="86" cy="105" r="26" fill="rgba(37,99,255,0.12)" stroke="rgba(79,142,255,0.4)" stroke-width="1"/>
+        <polygon points="80,95 80,115 98,105" fill="#4f8eff" opacity="0.9"/>
+        <rect x="30" y="164" width="112" height="1.5" rx="1" fill="url(#glowLine)" opacity="0.6"/>
+        <text x="86" y="181" font-family="'DM Sans', sans-serif" font-size="8" fill="rgba(255,255,255,0.3)" text-anchor="middle">SKILLBYTE GUIDE</text>
+      </svg>
+
+      <div class="sb-price-tag">
+        <span class="sb-price-old">$29</span>
+        <span class="sb-price-new">$9</span>
+      </div>
+    </div>
+
+    <div class="sb-card-body">
+      <p class="sb-card-tag">AI Tools · 45 min read</p>
+      <h3 class="sb-card-title">Master AI Prompting<br><span>in One Weekend.</span></h3>
+
+      <ul class="sb-pointers">
+        <li class="sb-pointer">
+          <div class="sb-pointer-dot"></div>
+          <span>No bloated theory — jump straight to frameworks you'll use tomorrow</span>
+        </li>
+        <li class="sb-pointer">
+          <div class="sb-pointer-dot"></div>
+          <span>12 plug-and-play prompt templates for real work scenarios</span>
+        </li>
+        <li class="sb-pointer">
+          <div class="sb-pointer-dot"></div>
+          <span>Works with ChatGPT, Claude, Gemini — any model, any workflow</span>
+        </li>
+        <li class="sb-pointer">
+          <div class="sb-pointer-dot"></div>
+          <span>One-time purchase. Lifetime updates. Zero subscription.</span>
+        </li>
+      </ul>
+
+      <div class="sb-divider"></div>
+
+      <div class="sb-cta-row">
+        <button class="sb-cta-btn">Get the Guide →</button>
+        <button class="sb-cta-link">Preview free chapter ↗</button>
+      </div>
+
+      <div class="sb-rating">
+        <span class="sb-stars">★★★★★</span>
+        <span>4.9 from 840 readers</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+(function(){
+  // 1. HERO CANVAS DOTS
+  const canvas = document.getElementById('bg'), ctx = canvas.getContext('2d');
+  let dots = [], W, H, mx = -999, my = -999, pulse = 0, pulseX = 0, pulseY = 0;
+  const clinkSound = new Audio('https://www.soundjay.com/buttons/button-10.mp3');
+  clinkSound.volume = 0.4;
+
+  function resize() {
+    W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight;
+    dots = []; const spacing = 35;
+    for (let x = spacing / 2; x < W; x += spacing)
+      for (let y = spacing / 2; y < H; y += spacing)
+        dots.push({ x, y, baseO: 0.04 + Math.random() * 0.04 });
+  }
+  function drawDots() {
+    ctx.clearRect(0, 0, W, H);
+    dots.forEach(d => {
+      let distM = Math.hypot(d.x - mx, d.y - my);
+      let hover = distM < 160 ? (1 - distM / 160) * 0.5 : 0;
+      let wave = 0;
+      if (pulse > 0) {
+        let distB = Math.hypot(d.x - pulseX, d.y - pulseY);
+        let waveR = pulse * 1200, waveD = Math.abs(distB - waveR);
+        if (waveD < 100) wave = (1 - waveD / 100) * 0.5 * (1 - pulse);
+      }
+      ctx.beginPath(); ctx.arc(d.x, d.y, 1.2, 0, 7);
+      ctx.fillStyle = `rgba(100, 160, 255, ${d.baseO + hover + wave})`;
+      ctx.fill();
+    });
+    if (pulse > 0) { pulse += 0.015; if (pulse > 1) pulse = 0; }
+    requestAnimationFrame(drawDots);
+  }
+  window.addEventListener('resize', resize);
+  window.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+  resize(); drawDots();
+
+  // 2. HERO ANIMATION
+  const anim = (dur, fn) => new Promise(res => {
+    const s = performance.now();
+    function step(now) {
+      let p = Math.min((now - s) / dur, 1);
+      fn(p); p < 1 ? requestAnimationFrame(step) : res();
+    }
+    requestAnimationFrame(step);
+  });
+
+  async function runHero() {
+    document.getElementById('ey').classList.add('show');
+    for (let i = 0; i < 5; i++) {
+      await new Promise(r => setTimeout(r, 90));
+      document.getElementById('w' + i).classList.add('show');
+    }
+    document.getElementById('sub').classList.add('show');
+    document.getElementById('btns').classList.add('show');
+    const hL = document.getElementById('hL'), hR = document.getElementById('hR');
+    await anim(1000, p => {
+      let x = 60 * (1 - p);
+      hL.style.transform = `translateX(${-x}px)`;
+      hR.style.transform = `translateX(${x}px)`;
+      hL.style.opacity = hR.style.opacity = p;
+    });
+    clinkSound.play().catch(() => {});
+    document.getElementById('seam').style.opacity = 0.5;
+    const r = document.getElementById('bulb').getBoundingClientRect();
+    pulseX = r.left + r.width / 2; pulseY = r.top + r.height / 2; pulse = 0.01;
+    anim(500, p => {
+      document.getElementById('ig0').setAttribute('stop-opacity', p);
+      document.getElementById('ig1').setAttribute('stop-opacity', p * 0.6);
+      document.getElementById('bloom').style.opacity = p;
+      document.getElementById('rays').style.opacity = p;
+    });
+  }
+  setTimeout(runHero, 600);
+
+  // 3. INFINITY LOOP
+  const cx = 360, cy = 220, a = 400;
+  function lem(t) {
+    const d = 1 + Math.sin(t) * Math.sin(t);
+    return { x: cx + a * Math.cos(t) / d, y: cy + a * Math.sin(t) * Math.cos(t) / d };
+  }
+  function buildPath() {
+    let d = '';
+    for (let i = 0; i <= 500; i++) {
+      const t = (i / 500) * 2 * Math.PI, p = lem(t);
+      d += (i === 0 ? 'M' : 'L') + p.x.toFixed(1) + ',' + p.y.toFixed(1);
+    }
+    return d + 'Z';
+  }
+  document.getElementById('lem-base').setAttribute('d', buildPath());
+  document.getElementById('lem-dash').setAttribute('d', buildPath());
+
+  const nodes = [
+    { label: 'Watch 40+ hours',    sub: 'Taking notes that never get read', angle: Math.PI * 0.5, offX: 0,   offY: -22, anchor: 'middle' },
+    { label: 'Buy another course', sub: '"Surely this one works..."',        angle: Math.PI,       offX: -22, offY: 0,   anchor: 'end'    },
+    { label: 'Forget it all',      sub: 'Back to square one',                angle: 0,             offX: 22,  offY: 0,   anchor: 'start'  },
+  ];
+  nodes.forEach((n, i) => {
+    const p = lem(n.angle); n.x = p.x; n.y = p.y;
+    document.getElementById('nd' + i).setAttribute('cx', p.x);
+    document.getElementById('nd' + i).setAttribute('cy', p.y);
+    const tx = p.x + n.offX * 2.6, ty = p.y + n.offY * 2.4;
+    const t = document.getElementById('l' + i + 't'), s = document.getElementById('l' + i + 's');
+    t.setAttribute('x', tx); t.setAttribute('y', ty); t.setAttribute('text-anchor', n.anchor); t.setAttribute('dominant-baseline', 'central');
+    s.setAttribute('x', tx); s.setAttribute('y', ty + 17); s.setAttribute('text-anchor', n.anchor);
+    t.textContent = n.label; s.textContent = n.sub;
+  });
+
+  let doff = 0;
+  (function tickD() { doff -= 0.42; document.getElementById('lem-dash').style.strokeDashoffset = doff; requestAnimationFrame(tickD); })();
+
+  const trav = document.getElementById('traveller'), ring = document.getElementById('nd-ring');
+  let T = 0, activeNode = -1, fadeOutTimer = null;
+  (function animTravel() {
+    T += 0.04; const p = lem(T);
+    trav.setAttribute('cx', p.x); trav.setAttribute('cy', p.y);
+    let hit = -1;
+    nodes.forEach((n, i) => { if (Math.hypot(p.x - n.x, p.y - n.y) < 32) hit = i; });
+    if (hit !== -1) {
+      if (activeNode !== hit) {
+        if (fadeOutTimer) clearTimeout(fadeOutTimer);
+        if (activeNode !== -1) document.getElementById('lbl' + activeNode).style.opacity = '0';
+        activeNode = hit; document.getElementById('lbl' + hit).style.opacity = '1';
+        ring.setAttribute('cx', nodes[hit].x); ring.setAttribute('cy', nodes[hit].y); ring.style.opacity = '1';
+      }
+    } else if (activeNode !== -1) {
+      const prev = activeNode; activeNode = -1; ring.style.opacity = '0';
+      fadeOutTimer = setTimeout(() => { document.getElementById('lbl' + prev).style.opacity = '0'; }, 800);
+    }
+    requestAnimationFrame(animTravel);
+  })();
+
+  // 4. SCROLL REVEAL — watches both #trap and #featured
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.querySelectorAll('.reveal-item').forEach((item, i) => {
+          setTimeout(() => item.classList.add('reveal-active'), i * 150);
+        });
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('#trap, #featured').forEach(el => observer.observe(el));
+})();
+</script>
+</body>
+</html>
