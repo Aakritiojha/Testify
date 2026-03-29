@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SkipTheLogic Admin — Post Editor</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0a0a;
+  --surface: #141414;
+  --surface2: #1c1c1c;
+  --surface3: #222;
+  --border: #2c2c2c;
+  --border2: #383838;
+  --accent: #c8f065;
+  --accent-dim: rgba(200,240,101,0.1);
+  --text: #efefef;
+  --muted: #777;
+  --muted2: #555;
+  --danger: #ff5c5c;
+  --warn: #f0a500;
+  --success: #4ade80;
+  --radius: 10px;
+  --font-body: 'DM Sans', sans-serif;
+  --font-display: 'Syne', sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-size:14px;min-height:100vh;overflow-x:hidden}
+
+/* TOPBAR */
+.topbar{position:sticky;top:0;z-index:200;background:rgba(10,10,10,0.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:54px;gap:16px}
+.logo{font-family:var(--font-display);font-weight:800;font-size:16px;color:var(--accent);letter-spacing:-0.3px;white-space:nowrap}
+.breadcrumb{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:12px;min-width:0}
+.breadcrumb a{color:var(--muted);text-decoration:none;transition:color .15s}.breadcrumb a:hover{color:var(--text)}
+.topbar-actions{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.status-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600}
+.status-badge.draft{background:rgba(255,255,255,0.05);color:var(--muted)}
+.status-badge.published{background:rgba(74,222,128,0.1);color:var(--success)}
+.status-dot{width:5px;height:5px;border-radius:50%;background:currentColor}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;border-radius:7px;font-family:var(--font-body);font-size:12px;font-weight:500;cursor:pointer;border:none;transition:all .18s;white-space:nowrap}
+.btn-ghost{background:transparent;color:var(--muted);border:1px solid var(--border)}.btn-ghost:hover{background:var(--surface2);color:var(--text);border-color:var(--border2)}
+.btn-draft{background:var(--surface2);color:var(--text);border:1px solid var(--border)}.btn-draft:hover{background:var(--surface3);border-color:var(--border2)}
+.btn-publish{background:var(--accent);color:#0a0a0a;font-weight:700}.btn-publish:hover{background:#d4f570;transform:translateY(-1px);box-shadow:0 4px 18px rgba(200,240,101,.28)}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none!important;box-shadow:none!important}
+.btn-danger{background:transparent;color:var(--danger);border:1px solid rgba(255,92,92,.25);width:100%;justify-content:center;margin-top:8px}.btn-danger:hover{background:rgba(255,92,92,.07);border-color:var(--danger)}
+
+/* LAYOUT */
+.layout{display:grid;grid-template-columns:1fr 290px;min-height:calc(100vh - 54px)}
+
+/* MAIN */
+.editor-main{padding:36px 52px 80px;border-right:1px solid var(--border);min-width:0}
+
+.title-input{width:100%;background:transparent;border:none;outline:none;font-family:var(--font-display);font-size:40px;font-weight:800;color:var(--text);line-height:1.12;resize:none;overflow:hidden;margin-bottom:14px;letter-spacing:-.5px}
+.title-input::placeholder{color:#252525}
+
+.slug-row{display:flex;align-items:center;gap:8px;margin-bottom:26px;padding-bottom:22px;border-bottom:1px solid var(--border)}
+.slug-prefix{color:var(--muted);font-size:12px;white-space:nowrap}
+.slug-input{flex:1;background:transparent;border:none;outline:none;color:var(--accent);font-size:12px;font-family:monospace;min-width:0}
+.slug-input::placeholder{color:#252525}
+.slug-input.editable{background:var(--accent-dim);outline:1px solid rgba(200,240,101,.3);border-radius:4px;padding:2px 6px}
+.slug-edit-btn{background:transparent;border:1px solid var(--border);color:var(--muted);font-size:11px;padding:3px 8px;border-radius:4px;cursor:pointer;font-family:var(--font-body);transition:all .15s}.slug-edit-btn:hover{border-color:var(--border2);color:var(--text)}
+
+.field-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:7px;display:flex;align-items:center;justify-content:space-between}
+.field-label span{font-weight:400;text-transform:none;letter-spacing:0;font-size:11px;color:var(--muted2)}
+
+.excerpt-area{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px;color:var(--text);font-family:var(--font-body);font-size:14px;line-height:1.6;resize:vertical;outline:none;margin-bottom:26px;transition:border-color .18s;min-height:76px}
+.excerpt-area::placeholder{color:#2e2e2e}.excerpt-area:focus{border-color:var(--border2)}
+
+/* TOOLBAR */
+.editor-wrapper{border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:border-color .2s}
+.editor-wrapper:focus-within{border-color:var(--border2)}
+.editor-toolbar{background:var(--surface);border-bottom:1px solid var(--border);padding:8px 12px;display:flex;flex-wrap:wrap;gap:2px;align-items:center}
+.tb-btn{background:transparent;border:none;color:var(--muted);cursor:pointer;padding:5px 8px;border-radius:5px;font-size:13px;font-family:var(--font-body);font-weight:500;transition:all .15s;display:inline-flex;align-items:center;justify-content:center;min-width:30px;height:28px;line-height:1}
+.tb-btn:hover{background:var(--surface2);color:var(--text)}
+.tb-sep{width:1px;height:20px;background:var(--border);margin:0 5px;flex-shrink:0}
+.tb-select{background:var(--surface);border:1px solid var(--border);color:var(--muted);font-family:var(--font-body);font-size:12px;padding:4px 8px;border-radius:5px;cursor:pointer;outline:none;transition:all .15s}
+.tb-select:hover{border-color:var(--border2);color:var(--text)}
+
+/* EDITOR CONTENT */
+#editor-content{background:var(--surface);min-height:480px;padding:28px 32px;outline:none;color:var(--text);font-family:var(--font-body);font-size:16px;line-height:1.85;caret-color:var(--accent);cursor:text}
+#editor-content:empty::before{content:attr(data-placeholder);color:#2a2a2a;pointer-events:none;position:absolute}
+#editor-content h1{font-family:var(--font-display);font-size:30px;font-weight:800;margin:28px 0 10px;color:var(--text);line-height:1.15}
+#editor-content h2{font-family:var(--font-display);font-size:22px;font-weight:700;margin:24px 0 8px;color:var(--text);line-height:1.2}
+#editor-content h3{font-family:var(--font-display);font-size:18px;font-weight:700;margin:20px 0 6px;color:var(--text)}
+#editor-content h4{font-family:var(--font-display);font-size:15px;font-weight:700;margin:16px 0 4px;color:var(--text)}
+#editor-content p{margin-bottom:14px;color:#d0d0d0}
+#editor-content strong{color:var(--text);font-weight:600}
+#editor-content em{font-style:italic;color:#bbb}
+#editor-content u{text-underline-offset:3px}
+#editor-content a{color:var(--accent);text-decoration:underline;text-underline-offset:3px}
+#editor-content ul,#editor-content ol{padding-left:22px;margin-bottom:14px;color:#d0d0d0}
+#editor-content li{margin-bottom:5px}
+#editor-content blockquote{border-left:3px solid var(--accent);padding:12px 18px;background:var(--accent-dim);border-radius:0 8px 8px 0;margin:18px 0;color:#bbb;font-style:italic}
+#editor-content code{background:var(--surface2);border:1px solid var(--border);border-radius:4px;padding:1px 5px;font-family:monospace;font-size:13px;color:#c8f065}
+#editor-content pre{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:16px 20px;overflow-x:auto;margin:14px 0}
+#editor-content pre code{background:none;border:none;padding:0}
+#editor-content img{max-width:100%;border-radius:8px;margin:14px 0;border:1px solid var(--border);display:block}
+#editor-content figure{margin:18px 0}
+#editor-content figcaption{font-size:12px;color:var(--muted);text-align:center;margin-top:6px}
+#editor-content hr{border:none;border-top:1px solid var(--border);margin:24px 0}
+
+/* DIALOGS */
+.dialog-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:500;display:none;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+.dialog-overlay.open{display:flex}
+.dialog{background:var(--surface2);border:1px solid var(--border2);border-radius:14px;padding:28px;width:440px;max-width:92vw}
+.dialog h3{font-family:var(--font-display);font-size:18px;font-weight:700;margin-bottom:20px}
+.dialog-field{margin-bottom:14px}
+.dialog-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:6px;display:block}
+.dialog-sublabel{font-weight:400;text-transform:none;letter-spacing:0;font-size:11px;color:var(--muted2)}
+.dialog-input{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:7px;padding:9px 12px;color:var(--text);font-family:var(--font-body);font-size:13px;outline:none;transition:border-color .15s}
+.dialog-input:focus{border-color:var(--border2)}
+.dialog-input::placeholder{color:#383838}
+.dialog-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:20px}
+
+/* SIDEBAR */
+.editor-sidebar{padding:20px 16px;display:flex;flex-direction:column;gap:14px;overflow-y:auto;max-height:calc(100vh - 54px);position:sticky;top:54px}
+.sidebar-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px}
+.card-title{font-family:var(--font-display);font-size:11px;font-weight:700;color:var(--text);margin-bottom:14px;display:flex;align-items:center;gap:7px;text-transform:uppercase;letter-spacing:.08em}
+.card-title-dot{width:3px;height:13px;background:var(--accent);border-radius:2px;flex-shrink:0}
+
+.form-group{margin-bottom:11px}.form-group:last-child{margin-bottom:0}
+.form-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:6px;display:flex;align-items:center;justify-content:space-between}
+.form-label span{font-weight:400;text-transform:none;letter-spacing:0;font-size:11px;color:var(--muted2)}
+.form-control{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:7px;padding:8px 11px;color:var(--text);font-family:var(--font-body);font-size:13px;outline:none;transition:border-color .18s;-webkit-appearance:none}
+.form-control::placeholder{color:#343434}.form-control:focus{border-color:var(--border2)}
+select.form-control{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;padding-right:28px}
+textarea.form-control{resize:vertical;min-height:70px;line-height:1.5}
+
+/* Stats */
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.stat-box{background:var(--surface2);border-radius:8px;padding:10px;text-align:center}
+.stat-val{font-family:var(--font-display);font-size:22px;font-weight:800;color:var(--accent);display:block}
+.stat-lbl{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+
+.link-counts{display:flex;gap:8px;margin-top:8px}
+.link-count-box{flex:1;background:var(--surface2);border-radius:8px;padding:8px;text-align:center}
+.link-count-val{font-family:var(--font-display);font-size:18px;font-weight:800;display:block}
+.link-count-val.internal{color:#60a5fa}
+.link-count-val.external{color:#c084fc}
+.link-count-lbl{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+
+/* Density */
+.density-section{margin-bottom:14px;padding:10px;background:var(--surface2);border-radius:8px}
+.density-row{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:6px}
+.density-bar-wrap{background:var(--border);border-radius:6px;height:5px;overflow:hidden;margin-bottom:6px}
+.density-bar{height:100%;border-radius:6px;transition:width .4s,background .4s;width:0}
+.density-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:600}
+.density-badge.good{background:rgba(74,222,128,.1);color:var(--success)}
+.density-badge.warn{background:rgba(240,165,0,.1);color:var(--warn)}
+.density-badge.bad{background:rgba(255,92,92,.1);color:var(--danger)}
+
+/* SEO checks */
+.seo-checks{display:flex;flex-direction:column;gap:5px;margin-top:12px}
+.seo-check{display:flex;align-items:center;gap:7px;font-size:11px;padding:5px 8px;border-radius:6px;background:var(--surface2)}
+.check-icon{font-size:11px;flex-shrink:0;width:16px;text-align:center}
+.check-label{flex:1;color:var(--muted)}
+.seo-check.pass .check-icon{color:var(--success)}
+.seo-check.pass .check-label{color:var(--text)}
+.seo-check.fail .check-icon{color:var(--danger)}
+
+/* SERP preview */
+.serp-preview{background:var(--surface2);border-radius:8px;padding:12px;margin-top:12px;border:1px solid var(--border)}
+.serp-url{font-size:11px;color:#4ade80;margin-bottom:3px}
+.serp-title{font-size:13px;color:#60a5fa;font-weight:500;margin-bottom:3px;line-height:1.3}
+.serp-desc{font-size:11px;color:var(--muted);line-height:1.5}
+
+.cover-preview{width:100%;height:110px;border-radius:8px;object-fit:cover;margin-top:8px;display:none;border:1px solid var(--border)}
+.last-saved{font-size:11px;color:var(--muted2);text-align:center;margin-bottom:8px}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;right:24px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:12px 18px;font-size:13px;display:flex;align-items:center;gap:10px;opacity:0;transform:translateY(10px);transition:all .3s cubic-bezier(.34,1.56,.64,1);z-index:9999;pointer-events:none;max-width:300px;box-shadow:0 8px 32px rgba(0,0,0,.5)}
+.toast.show{opacity:1;transform:translateY(0)}
+.toast.success{border-color:rgba(74,222,128,.3)}
+.toast.error{border-color:rgba(255,92,92,.3)}
+.spinner{width:12px;height:12px;border:2px solid rgba(0,0,0,.25);border-top-color:#0a0a0a;border-radius:50%;animation:spin .6s linear infinite;display:none}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <div style="display:flex;align-items:center;gap:14px;min-width:0">
+    <div class="logo">SKIPTHELOGIC</div>
+    <div class="breadcrumb">
+      <span>›</span><a href="dashboard.html">Posts</a><span>›</span>
+      <span id="breadcrumb-title" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:180px">New Post</span>
+    </div>
+  </div>
+  <div class="topbar-actions">
+    <div class="status-badge draft" id="status-badge"><div class="status-dot"></div><span id="status-text">Draft</span></div>
+    <button class="btn btn-ghost" onclick="window.location.href='dashboard.html'">← Back</button>
+    <button class="btn btn-draft" id="btn-draft" onclick="savePost('draft')">
+      <div class="spinner" id="spinner-draft"></div>Save Draft
+    </button>
+    <button class="btn btn-publish" id="btn-publish" onclick="savePost('published')">
+      <div class="spinner" id="spinner-publish"></div>Publish
+    </button>
+  </div>
+</header>
+
+<!-- LAYOUT -->
+<div class="layout">
+
+  <!-- MAIN -->
+  <main class="editor-main">
+    <textarea class="title-input" id="title-input" placeholder="Post Title (H1)..." rows="1"
+      oninput="autoResize(this);generateSlug(this.value);updateSEO();updateMetaPreview()"></textarea>
+
+    <div class="slug-row">
+      <span class="slug-prefix">skipthelogic.com/blog/</span>
+      <input type="text" class="slug-input" id="slug-input" placeholder="post-slug" readonly
+        oninput="updateMetaPreview()">
+      <button class="slug-edit-btn" id="slug-edit-btn" onclick="toggleSlugEdit()">Edit</button>
+    </div>
+
+    <label class="field-label">Excerpt <span>Shown on blog listing cards</span></label>
+    <textarea class="excerpt-area" id="excerpt-input"
+      placeholder="Short 1–2 sentence summary of this post..."></textarea>
+
+    <label class="field-label">Post Body</label>
+    <div class="editor-wrapper">
+      <div class="editor-toolbar">
+        <select class="tb-select" id="heading-select" onchange="applyBlock(this.value)">
+          <option value="p">Paragraph</option>
+          <option value="h1">Heading 1</option>
+          <option value="h2">Heading 2</option>
+          <option value="h3">Heading 3</option>
+          <option value="h4">Heading 4</option>
+        </select>
+        <div class="tb-sep"></div>
+        <button class="tb-btn" title="Bold" onmousedown="e=>e.preventDefault()" onclick="fmt('bold')"><b>B</b></button>
+        <button class="tb-btn" title="Italic" onclick="fmt('italic')"><i>I</i></button>
+        <button class="tb-btn" title="Underline" onclick="fmt('underline')"><u>U</u></button>
+        <button class="tb-btn" title="Strikethrough" onclick="fmt('strikeThrough')"><s>S</s></button>
+        <div class="tb-sep"></div>
+        <button class="tb-btn" title="Ordered list" onclick="fmt('insertOrderedList')">1.</button>
+        <button class="tb-btn" title="Bullet list" onclick="fmt('insertUnorderedList')">•</button>
+        <button class="tb-btn" title="Blockquote" onclick="applyBlock('blockquote')">❝</button>
+        <button class="tb-btn" title="Code" onclick="insertInlineCode()">&lt;/&gt;</button>
+        <div class="tb-sep"></div>
+        <button class="tb-btn" title="Insert link" onclick="openLinkDlg()">🔗</button>
+        <button class="tb-btn" title="Insert image" onclick="openImgDlg()">🖼</button>
+        <button class="tb-btn" title="Horizontal rule" onclick="fmt('insertHorizontalRule')">—</button>
+        <div class="tb-sep"></div>
+        <button class="tb-btn" title="Undo" onclick="fmt('undo')">↩</button>
+        <button class="tb-btn" title="Redo" onclick="fmt('redo')">↪</button>
+      </div>
+      <div id="editor-content" contenteditable="true"
+        data-placeholder="Start writing your post here..."
+        oninput="onBodyInput()"
+        onkeydown="handleKey(event)">
+      </div>
+    </div>
+  </main>
+
+  <!-- SIDEBAR -->
+  <aside class="editor-sidebar">
+
+    <!-- Stats -->
+    <div class="sidebar-card">
+      <div class="card-title"><div class="card-title-dot"></div>Stats</div>
+      <div class="stats-grid">
+        <div class="stat-box"><span class="stat-val" id="word-count">0</span><span class="stat-lbl">Words</span></div>
+        <div class="stat-box"><span class="stat-val" id="read-time-val">0</span><span class="stat-lbl">Min read</span></div>
+      </div>
+      <div class="link-counts">
+        <div class="link-count-box"><span class="link-count-val internal" id="int-links">0</span><span class="link-count-lbl">Internal</span></div>
+        <div class="link-count-box"><span class="link-count-val external" id="ext-links">0</span><span class="link-count-lbl">External</span></div>
+      </div>
+    </div>
+
+    <!-- Settings -->
+    <div class="sidebar-card">
+      <div class="card-title"><div class="card-title-dot"></div>Settings</div>
+      <div class="form-group">
+        <label class="form-label">Category</label>
+        <select class="form-control" id="category-input">
+          <option value="">Select category...</option>
+          <option value="AI & Automation">AI & Automation</option>
+          <option value="Marketing">Marketing</option>
+          <option value="SMM & SEO">SMM & SEO</option>
+          <option value="Business">Business</option>
+          <option value="Productivity">Productivity</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Author</label>
+        <input type="text" class="form-control" id="author-input" value="SkipTheLogic">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Read Time (mins)</label>
+        <input type="number" class="form-control" id="readtime-input" value="5" min="1" max="120">
+      </div>
+    </div>
+
+    <!-- Cover Image -->
+    <div class="sidebar-card">
+      <div class="card-title"><div class="card-title-dot"></div>Cover Image</div>
+      <label class="form-label">Image URL</label>
+      <input type="text" class="form-control" id="cover-input" placeholder="https://..." oninput="previewCover(this.value)">
+      <img id="cover-preview" class="cover-preview" alt="Cover preview">
+    </div>
+
+    <!-- SEO -->
+    <div class="sidebar-card">
+      <div class="card-title"><div class="card-title-dot"></div>SEO</div>
+
+      <div class="form-group">
+        <label class="form-label">Focus Keyword</label>
+        <input type="text" class="form-control" id="focus-kw" placeholder="e.g. AI automation tools" oninput="updateSEO()">
+      </div>
+
+      <div id="density-section" style="display:none">
+        <div class="density-section">
+          <div class="density-row">
+            <span>Keyword density</span>
+            <span id="density-frac">0 uses / 0 words</span>
+          </div>
+          <div class="density-bar-wrap"><div class="density-bar" id="density-bar"></div></div>
+          <div id="density-badge" class="density-badge bad">—</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Meta Title <span id="mt-count">0/60</span></label>
+        <input type="text" class="form-control" id="meta-title" placeholder="SEO title..."
+          oninput="updateCounts();updateSEO();updateMetaPreview()">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Meta Description <span id="md-count">0/160</span></label>
+        <textarea class="form-control" id="meta-desc" rows="3" placeholder="120–160 characters ideal..."
+          oninput="updateCounts();updateSEO();updateMetaPreview()"></textarea>
+      </div>
+
+      <div class="seo-checks">
+        <div class="seo-check fail" id="chk-kw"><span class="check-icon">✕</span><span class="check-label">Add a focus keyword</span></div>
+        <div class="seo-check fail" id="chk-title-kw"><span class="check-icon">✕</span><span class="check-label">Keyword in title</span></div>
+        <div class="seo-check fail" id="chk-meta-kw"><span class="check-icon">✕</span><span class="check-label">Keyword in meta description</span></div>
+        <div class="seo-check fail" id="chk-para-kw"><span class="check-icon">✕</span><span class="check-label">Keyword in first paragraph</span></div>
+        <div class="seo-check fail" id="chk-mt-len"><span class="check-icon">✕</span><span class="check-label">Meta title length (30–60)</span></div>
+        <div class="seo-check fail" id="chk-md-len"><span class="check-icon">✕</span><span class="check-label">Meta description length (120–160)</span></div>
+      </div>
+
+      <div class="serp-preview">
+        <div class="serp-url">skipthelogic.com/blog/<span id="prev-slug">post-slug</span></div>
+        <div class="serp-title" id="prev-title">Post Title</div>
+        <div class="serp-desc" id="prev-desc">Meta description preview.</div>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="sidebar-card">
+      <div class="card-title"><div class="card-title-dot"></div>Actions</div>
+      <div class="last-saved" id="last-saved">Not saved yet</div>
+      <button class="btn btn-danger" id="btn-delete" onclick="deletePost()" style="display:none">🗑 Delete Post</button>
+      <p id="new-note" style="font-size:11px;color:var(--muted2);text-align:center">Save first to enable deletion.</p>
+    </div>
+
+  </aside>
+</div>
+
+<!-- IMAGE DIALOG -->
+<div class="dialog-overlay" id="img-dlg">
+  <div class="dialog">
+    <h3>Insert Image</h3>
+    <div class="dialog-field">
+      <label class="dialog-label">Image URL</label>
+      <input class="dialog-input" type="text" id="di-url" placeholder="https://...">
+    </div>
+    <div class="dialog-field">
+      <label class="dialog-label">Alt Text <span class="dialog-sublabel">— Important for SEO & accessibility</span></label>
+      <input class="dialog-input" type="text" id="di-alt" placeholder="Describe what's in the image...">
+    </div>
+    <div class="dialog-field">
+      <label class="dialog-label">Caption <span class="dialog-sublabel">— Optional</span></label>
+      <input class="dialog-input" type="text" id="di-cap" placeholder="Image caption...">
+    </div>
+    <div class="dialog-actions">
+      <button class="btn btn-ghost" onclick="closeImgDlg()">Cancel</button>
+      <button class="btn btn-publish" onclick="insertImage()">Insert Image</button>
+    </div>
+  </div>
+</div>
+
+<!-- LINK DIALOG -->
+<div class="dialog-overlay" id="link-dlg">
+  <div class="dialog" style="width:380px">
+    <h3>Insert Link</h3>
+    <div class="dialog-field">
+      <label class="dialog-label">URL</label>
+      <input class="dialog-input" type="text" id="dl-url" placeholder="https://...">
+    </div>
+    <div class="dialog-field">
+      <label class="dialog-label">Link Text</label>
+      <input class="dialog-input" type="text" id="dl-text" placeholder="Anchor text...">
+    </div>
+    <div class="dialog-field" style="display:flex;align-items:center;gap:8px;margin-top:4px">
+      <input type="checkbox" id="dl-newtab" checked style="accent-color:var(--accent);width:14px;height:14px">
+      <label for="dl-newtab" style="font-size:13px;color:var(--muted);cursor:pointer">Open in new tab</label>
+    </div>
+    <div class="dialog-actions">
+      <button class="btn btn-ghost" onclick="closeLinkDlg()">Cancel</button>
+      <button class="btn btn-publish" onclick="insertLink()">Insert Link</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <span id="ti"></span><span id="tm"></span>
+</div>
+
+<script>
+const SUPA_URL = 'https://xwxzdxgzsjgkfrjyhwna.supabase.co';
+const SUPA_KEY = 'sb_publishable_BrreLGVx-F8zQEnRgCybhQ_-FxK8cMj';
+
+if (sessionStorage.getItem('stl_admin_session') !== 'true') {
+  window.location.replace('index.html');
+}
+let postId = null;
+let slugLocked = true;
+let savedRange = null;
+
+const ed = () => document.getElementById('editor-content');
+
+// ── FORMATTING ──────────────────────────────────────────────
+function fmt(cmd, val = null) {
+  ed().focus();
+  document.execCommand(cmd, false, val);
+  onBodyInput();
+}
+
+function applyBlock(tag) {
+  ed().focus();
+  document.execCommand('formatBlock', false, tag);
+  onBodyInput();
+}
+
+function insertInlineCode() {
+  const sel = window.getSelection();
+  if (sel && sel.toString()) {
+    const code = document.createElement('code');
+    code.textContent = sel.toString();
+    const range = sel.getRangeAt(0);
+    range.deleteContents();
+    range.insertNode(code);
+  }
+  onBodyInput();
+}
+
+function handleKey(e) {
+  if (e.key === 'Tab') {
+    e.preventDefault();
+    fmt('insertText', '\u00a0\u00a0\u00a0\u00a0');
+  }
+  if (e.key === 'Enter') {
+    const sel = window.getSelection();
+    if (!sel.rangeCount) return;
+    const node = sel.getRangeAt(0).startContainer;
+    const parent = node.nodeType === 3 ? node.parentElement : node;
+    const tag = parent.tagName?.toLowerCase();
+    if (['h1','h2','h3','h4'].includes(tag)) {
+      e.preventDefault();
+      document.execCommand('insertParagraph');
+      document.execCommand('formatBlock', false, 'p');
+      document.getElementById('heading-select').value = 'p';
+    }
+  }
+}
+
+document.addEventListener('selectionchange', () => {
+  const sel = window.getSelection();
+  if (!sel || !sel.rangeCount) return;
+  const node = sel.getRangeAt(0).startContainer;
+  const el = node.nodeType === 3 ? node.parentElement : node;
+  const block = el.closest?.('h1,h2,h3,h4,p,div');
+  if (block) {
+    const t = block.tagName.toLowerCase();
+    const s = document.getElementById('heading-select');
+    s.value = ['h1','h2','h3','h4'].includes(t) ? t : 'p';
+  }
+});
+
+// ── IMAGE ───────────────────────────────────────────────────
+function openImgDlg() {
+  savedRange = window.getSelection()?.rangeCount ? window.getSelection().getRangeAt(0).cloneRange() : null;
+  document.getElementById('di-url').value = '';
+  document.getElementById('di-alt').value = '';
+  document.getElementById('di-cap').value = '';
+  document.getElementById('img-dlg').classList.add('open');
+  setTimeout(() => document.getElementById('di-url').focus(), 60);
+}
+function closeImgDlg() { document.getElementById('img-dlg').classList.remove('open'); }
+
+function insertImage() {
+  const url = document.getElementById('di-url').value.trim();
+  const alt = document.getElementById('di-alt').value.trim();
+  const cap = document.getElementById('di-cap').value.trim();
+  if (!url) return toast('Enter an image URL', 'error');
+
+  ed().focus();
+  if (savedRange) {
+    const sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(savedRange);
+  }
+
+  const fig = document.createElement('figure');
+  fig.style.margin = '20px 0';
+  const img = document.createElement('img');
+  img.src = url; img.alt = alt;
+  img.style.cssText = 'max-width:100%;border-radius:8px;border:1px solid #2c2c2c;display:block';
+  fig.appendChild(img);
+  if (cap) {
+    const fc = document.createElement('figcaption');
+    fc.textContent = cap;
+    fc.style.cssText = 'font-size:12px;color:#777;text-align:center;margin-top:6px';
+    fig.appendChild(fc);
+  }
+
+  const sel = window.getSelection();
+  if (sel.rangeCount) {
+    const r = sel.getRangeAt(0);
+    r.collapse(false);
+    r.insertNode(fig);
+    r.setStartAfter(fig); r.collapse(true);
+    sel.removeAllRanges(); sel.addRange(r);
+  } else {
+    ed().appendChild(fig);
+  }
+
+  closeImgDlg();
+  onBodyInput();
+  toast('Image inserted ✓', 'success');
+}
+
+// ── LINK ────────────────────────────────────────────────────
+function openLinkDlg() {
+  savedRange = window.getSelection()?.rangeCount ? window.getSelection().getRangeAt(0).cloneRange() : null;
+  const selTxt = window.getSelection()?.toString() || '';
+  document.getElementById('dl-text').value = selTxt;
+  document.getElementById('dl-url').value = '';
+  document.getElementById('dl-newtab').checked = true;
+  document.getElementById('link-dlg').classList.add('open');
+  setTimeout(() => document.getElementById('dl-url').focus(), 60);
+}
+function closeLinkDlg() { document.getElementById('link-dlg').classList.remove('open'); }
+
+function insertLink() {
+  const url = document.getElementById('dl-url').value.trim();
+  const txt = document.getElementById('dl-text').value.trim();
+  const newTab = document.getElementById('dl-newtab').checked;
+  if (!url) return toast('Enter a URL', 'error');
+
+  ed().focus();
+  if (savedRange) {
+    const sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(savedRange);
+  }
+
+  const a = document.createElement('a');
+  a.href = url; a.textContent = txt || url;
+  if (newTab) { a.target = '_blank'; a.rel = 'noopener noreferrer'; }
+
+  const sel = window.getSelection();
+  if (sel.rangeCount) {
+    const r = sel.getRangeAt(0);
+    r.deleteContents();
+    r.insertNode(a);
+    r.setStartAfter(a); r.collapse(true);
+    sel.removeAllRanges(); sel.addRange(r);
+  }
+  closeLinkDlg();
+  onBodyInput();
+}
+
+// Close dialogs on backdrop click
+document.getElementById('img-dlg').addEventListener('click', e => { if(e.target===e.currentTarget) closeImgDlg(); });
+document.getElementById('link-dlg').addEventListener('click', e => { if(e.target===e.currentTarget) closeLinkDlg(); });
+
+// ── LIVE ANALYSIS ────────────────────────────────────────────
+function onBodyInput() {
+  updateStats();
+  updateLinkCount();
+  updateSEO();
+}
+
+function updateStats() {
+  const txt = ed().innerText || '';
+  const words = txt.trim() ? txt.trim().split(/\s+/).length : 0;
+  document.getElementById('word-count').textContent = words;
+  const mins = Math.max(1, Math.round(words / 200));
+  document.getElementById('read-time-val').textContent = mins;
+  document.getElementById('readtime-input').value = mins;
+}
+
+function updateLinkCount() {
+  const links = ed().querySelectorAll('a');
+  let int = 0, ext = 0;
+  links.forEach(a => {
+    const h = a.getAttribute('href') || '';
+    if (h.startsWith('/') || h.includes('skipthelogic.com')) int++;
+    else if (h.startsWith('http')) ext++;
+  });
+  document.getElementById('int-links').textContent = int;
+  document.getElementById('ext-links').textContent = ext;
+}
+
+function updateSEO() {
+  const kw = (document.getElementById('focus-kw').value || '').trim().toLowerCase();
+  const title = (document.getElementById('title-input').value || '').toLowerCase();
+  const metaD = (document.getElementById('meta-desc').value || '').toLowerCase();
+  const body = (ed().innerText || '').toLowerCase();
+  const firstP = (ed().querySelector('p')?.innerText || '').toLowerCase();
+  const words = body.trim() ? body.trim().split(/\s+/).length : 0;
+
+  if (kw) {
+    document.getElementById('density-section').style.display = 'block';
+    const esc = kw.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const hits = (body.match(new RegExp(esc,'gi')) || []).length;
+    const pct = words > 0 ? (hits / words) * 100 : 0;
+
+    document.getElementById('density-frac').textContent = `${hits} uses / ${words} words`;
+    const bar = document.getElementById('density-bar');
+    bar.style.width = Math.min(pct * 20, 100) + '%';
+
+    const badge = document.getElementById('density-badge');
+    if (pct >= 1 && pct <= 3) {
+      bar.style.background = 'var(--success)';
+      badge.className = 'density-badge good';
+      badge.textContent = `✓ ${pct.toFixed(2)}% — Good`;
+    } else if (pct >= 0.5) {
+      bar.style.background = 'var(--warn)';
+      badge.className = 'density-badge warn';
+      badge.textContent = `⚠ ${pct.toFixed(2)}% — A bit low`;
+    } else {
+      bar.style.background = 'var(--danger)';
+      badge.className = 'density-badge bad';
+      badge.textContent = `✕ ${pct.toFixed(2)}% — Too low`;
+    }
+
+    setChk('chk-kw', true, 'Focus keyword set');
+    setChk('chk-title-kw', title.includes(kw), 'Keyword in title');
+    setChk('chk-meta-kw', metaD.includes(kw), 'Keyword in meta description');
+    setChk('chk-para-kw', firstP.includes(kw), 'Keyword in first paragraph');
+  } else {
+    document.getElementById('density-section').style.display = 'none';
+    setChk('chk-kw', false, 'Add a focus keyword');
+    setChk('chk-title-kw', false, 'Keyword in title');
+    setChk('chk-meta-kw', false, 'Keyword in meta description');
+    setChk('chk-para-kw', false, 'Keyword in first paragraph');
+  }
+
+  const mtL = document.getElementById('meta-title').value.length;
+  const mdL = document.getElementById('meta-desc').value.length;
+  setChk('chk-mt-len', mtL >= 30 && mtL <= 60, `Meta title: ${mtL}/60 chars`);
+  setChk('chk-md-len', mdL >= 120 && mdL <= 160, `Meta desc: ${mdL}/160 chars`);
+}
+
+function setChk(id, pass, label) {
+  const el = document.getElementById(id);
+  el.className = `seo-check ${pass ? 'pass' : 'fail'}`;
+  el.querySelector('.check-icon').textContent = pass ? '✓' : '✕';
+  el.querySelector('.check-label').textContent = label;
+}
+
+function updateCounts() {
+  const mt = document.getElementById('meta-title').value.length;
+  const md = document.getElementById('meta-desc').value.length;
+  const mtEl = document.getElementById('mt-count');
+  const mdEl = document.getElementById('md-count');
+  mtEl.textContent = `${mt}/60`; mtEl.style.color = mt > 60 ? 'var(--danger)' : '';
+  mdEl.textContent = `${md}/160`; mdEl.style.color = md > 160 ? 'var(--danger)' : '';
+}
+
+function updateMetaPreview() {
+  const title = document.getElementById('meta-title').value || document.getElementById('title-input').value || 'Post Title';
+  const desc = document.getElementById('meta-desc').value || 'Meta description will appear here.';
+  const slug = document.getElementById('slug-input').value || 'post-slug';
+  document.getElementById('prev-title').textContent = title.length > 60 ? title.slice(0,60)+'…' : title;
+  document.getElementById('prev-desc').textContent = desc.length > 160 ? desc.slice(0,160)+'…' : desc;
+  document.getElementById('prev-slug').textContent = slug;
+}
+
+// ── LOAD ─────────────────────────────────────────────────────
+window.addEventListener('DOMContentLoaded', async () => {
+  const id = new URLSearchParams(window.location.search).get('id');
+  if (id) await loadPost(id);
+});
+
+async function loadPost(id) {
+  const r = await fetch(`${SUPA_URL}/rest/v1/posts?id=eq.${id}`, {
+    headers: { 'apikey': SUPA_KEY, 'Authorization': `Bearer ${SUPA_KEY}` }
+  });
+  const data = await r.json();
+  if (!data.length) return toast('Post not found', 'error');
+  const p = data[0];
+  postId = p.id;
+
+  document.getElementById('title-input').value = p.title || '';
+  autoResize(document.getElementById('title-input'));
+  document.getElementById('breadcrumb-title').textContent = p.title || 'Edit Post';
+  document.getElementById('slug-input').value = p.slug || '';
+  document.getElementById('excerpt-input').value = p.excerpt || '';
+  document.getElementById('category-input').value = p.category || '';
+  document.getElementById('author-input').value = p.author || 'SkipTheLogic';
+  document.getElementById('readtime-input').value = p.read_time || 5;
+  document.getElementById('cover-input').value = p.cover_image || '';
+  document.getElementById('focus-kw').value = p.focus_keyword || '';
+  document.getElementById('meta-title').value = p.meta_title || '';
+  document.getElementById('meta-desc').value = p.meta_description || '';
+  if (p.cover_image) previewCover(p.cover_image);
+  if (p.body) ed().innerHTML = p.body;
+
+  updateStatusBadge(p.status);
+  updateLastSaved(p.updated_at);
+  updateCounts();
+  updateMetaPreview();
+  onBodyInput();
+
+  document.getElementById('btn-delete').style.display = 'flex';
+  document.getElementById('new-note').style.display = 'none';
+}
+
+// ── SAVE ─────────────────────────────────────────────────────
+async function savePost(status) {
+  const title = document.getElementById('title-input').value.trim();
+  if (!title) return toast('Add a title first', 'error');
+  const slug = document.getElementById('slug-input').value.trim();
+  if (!slug) return toast('Add a slug', 'error');
+  const cat = document.getElementById('category-input').value;
+  if (!cat) return toast('Select a category', 'error');
+
+  const sid = status === 'draft' ? 'spinner-draft' : 'spinner-publish';
+  const bid = status === 'draft' ? 'btn-draft' : 'btn-publish';
+  setLoad(sid, bid, true);
+
+  const payload = {
+    title, slug, status,
+    excerpt: document.getElementById('excerpt-input').value.trim(),
+    body: ed().innerHTML,
+    category: cat,
+    author: document.getElementById('author-input').value.trim() || 'SkipTheLogic',
+    read_time: parseInt(document.getElementById('readtime-input').value) || 5,
+    cover_image: document.getElementById('cover-input').value.trim(),
+    focus_keyword: document.getElementById('focus-kw').value.trim(),
+    meta_title: document.getElementById('meta-title').value.trim(),
+    meta_description: document.getElementById('meta-desc').value.trim()
+  };
+
+  const headers = {
+    'apikey': SUPA_KEY, 'Authorization': `Bearer ${SUPA_KEY}`,
+    'Content-Type': 'application/json', 'Prefer': 'return=representation'
+  };
+
+  try {
+    const url = postId ? `${SUPA_URL}/rest/v1/posts?id=eq.${postId}` : `${SUPA_URL}/rest/v1/posts`;
+    const method = postId ? 'PATCH' : 'POST';
+    const res = await fetch(url, { method, headers, body: JSON.stringify(payload) });
+    if (!res.ok) { const e = await res.json(); throw new Error(e.message || 'Save failed'); }
+    const saved = await res.json();
+    const post = Array.isArray(saved) ? saved[0] : saved;
+    postId = post.id;
+    window.history.replaceState({}, '', `?id=${post.id}`);
+    updateStatusBadge(status);
+    updateLastSaved(new Date().toISOString());
+    document.getElementById('breadcrumb-title').textContent = title;
+    document.getElementById('btn-delete').style.display = 'flex';
+    document.getElementById('new-note').style.display = 'none';
+    toast(status === 'published' ? '🎉 Post published!' : '✅ Draft saved', 'success');
+  } catch(err) {
+    toast('Error: ' + err.message, 'error');
+  } finally {
+    setLoad(sid, bid, false);
+  }
+}
+
+// ── DELETE ────────────────────────────────────────────────────
+async function deletePost() {
+  if (!postId || !confirm('Delete this post? Cannot be undone.')) return;
+  const r = await fetch(`${SUPA_URL}/rest/v1/posts?id=eq.${postId}`, {
+    method: 'DELETE',
+    headers: { 'apikey': SUPA_KEY, 'Authorization': `Bearer ${SUPA_KEY}` }
+  });
+  if (r.ok) { toast('Deleted', 'success'); setTimeout(() => location.href = 'dashboard.html', 1200); }
+  else toast('Delete failed', 'error');
+}
+
+// ── HELPERS ───────────────────────────────────────────────────
+function generateSlug(title) {
+  if (!slugLocked) return;
+  document.getElementById('slug-input').value = title.toLowerCase().trim()
+    .replace(/[^a-z0-9\s-]/g,'').replace(/\s+/g,'-').replace(/-+/g,'-');
+  updateMetaPreview();
+}
+
+function toggleSlugEdit() {
+  slugLocked = !slugLocked;
+  const inp = document.getElementById('slug-input');
+  inp.readOnly = slugLocked;
+  inp.classList.toggle('editable', !slugLocked);
+  document.getElementById('slug-edit-btn').textContent = slugLocked ? 'Edit' : 'Lock';
+  if (!slugLocked) inp.focus();
+}
+
+function autoResize(el) {
+  el.style.height = 'auto';
+  el.style.height = el.scrollHeight + 'px';
+}
+
+function previewCover(url) {
+  const img = document.getElementById('cover-preview');
+  if (url) { img.src = url; img.style.display = 'block'; img.onerror = () => img.style.display='none'; }
+  else img.style.display = 'none';
+}
+
+function updateStatusBadge(s) {
+  document.getElementById('status-badge').className = `status-badge ${s}`;
+  document.getElementById('status-text').textContent = s === 'published' ? 'Published' : 'Draft';
+}
+
+function updateLastSaved(iso) {
+  const t = new Date(iso).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+  document.getElementById('last-saved').textContent = `Last saved at ${t}`;
+}
+
+function setLoad(sid, bid, on) {
+  document.getElementById(sid).style.display = on ? 'block' : 'none';
+  document.getElementById(bid).disabled = on;
+}
+
+function toast(msg, type='success') {
+  const el = document.getElementById('toast');
+  document.getElementById('ti').textContent = type === 'success' ? '✓' : '✕';
+  document.getElementById('tm').textContent = msg;
+  el.className = `toast ${type} show`;
+  setTimeout(() => el.classList.remove('show'), 3200);
+}
+</script>
+</body>
+</html>

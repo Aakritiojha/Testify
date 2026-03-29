@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Blog — Practical Insights | SkipTheLogic</title>
+<meta name="description" content="Practical guides, tools, and strategies to help you work smarter. Explore articles on productivity, AI, strategy, and more from SkipTheLogic.">
+<link rel="canonical" href="https://skipthelogic.com/blog/">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SkipTheLogic">
+<meta property="og:title" content="Blog — Practical Insights | SkipTheLogic">
+<meta property="og:description" content="Practical guides, tools, and strategies to help you work smarter.">
+<meta property="og:url" content="https://skipthelogic.com/blog/">
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Blog | SkipTheLogic">
+<meta name="twitter:description" content="Practical guides, tools, and strategies to help you work smarter.">
+
+<!-- JSON-LD -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Blog",
+  "name": "SkipTheLogic Blog",
+  "description": "Practical guides, tools, and strategies to help you work smarter.",
+  "url": "https://skipthelogic.com/blog/",
+  "publisher": {
+    "@type": "Organization",
+    "name": "SkipTheLogic",
+    "url": "https://skipthelogic.com"
+  }
+}
+</script>
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,400&display=swap" rel="stylesheet">
+
+<style>
+/* ═══════════════════════════════════════════
+   TOKENS
+═══════════════════════════════════════════ */
+:root {
+  --bg: #06070d;
+  --bg2: #0a0c18;
+  --surface: #0d1020;
+  --surface2: #131629;
+  --border: rgba(255,255,255,0.08);
+  --border2: rgba(255,255,255,0.14);
+  --text: #f0f2fa;
+  --text2: #c8cce0;
+  --muted: rgba(255,255,255,0.4);
+  --muted2: rgba(255,255,255,0.25);
+  --accent: #4f8eff;
+  --accent2: #7c3aed;
+  --accent-light: rgba(79,142,255,0.1);
+  --accent-mid: rgba(79,142,255,0.18);
+  --radius: 10px;
+  --font-body: 'DM Sans', sans-serif;
+  --font-display: 'Syne', sans-serif;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,.4),0 1px 2px rgba(0,0,0,.3);
+  --shadow-md: 0 4px 16px rgba(0,0,0,.5),0 2px 6px rgba(0,0,0,.3);
+  --shadow-hover: 0 8px 32px rgba(37,99,255,0.2),0 2px 8px rgba(0,0,0,.4);
+}
+
+/* ═══════════════════════════════════════════
+   RESET
+═══════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--font-body);line-height:1.6;-webkit-font-smoothing:antialiased;transition:background .25s,color .25s}
+
+/* ═══════════════════════════════════════════
+   NAV
+═══════════════════════════════════════════ */
+.nav{position:sticky;top:0;z-index:100;background:rgba(6,7,13,0.85);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,0.07);transition:background .25s}
+.nav-inner{max-width:1200px;margin:0 auto;padding:0 40px;height:80px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.nav-logo{font-family:var(--font-display);font-weight:800;font-size:18px;color:#f0f2fa;text-decoration:none;display:flex;align-items:center;gap:7px;letter-spacing:-.2px}
+.nav-logo-dot{width:7px;height:7px;border-radius:50%;background:#2563ff;box-shadow:0 0 10px rgba(37,99,255,0.8);flex-shrink:0}
+.nav-links{display:flex;gap:24px;list-style:none}
+.nav-links a{font-size:13px;color:rgba(255,255,255,0.4);text-decoration:none;transition:color .3s;font-family:'DM Sans',sans-serif;font-weight:500}
+.nav-links a:hover,.nav-links a.active{color:#fff}
+.nav-cta{padding:10px 20px;border-radius:12px;background:#2563ff;color:#fff;border:none;font-weight:600;cursor:pointer;transition:.3s;font-family:'DM Sans',sans-serif;font-size:13px;text-decoration:none;white-space:nowrap}
+.nav-cta:hover{background:#3b7fff;transform:translateY(-2px);box-shadow:0 10px 20px rgba(37,99,255,0.3)}
+
+/* ═══════════════════════════════════════════
+   HERO
+═══════════════════════════════════════════ */
+.hero{padding:64px 24px 48px;max-width:1200px;margin:0 auto}
+.hero-label{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--accent);margin-bottom:18px}
+.hero-label::before{content:'';width:24px;height:2px;background:var(--accent);border-radius:1px}
+.hero-title{font-family:var(--font-display);font-size:clamp(36px,5vw,64px);font-weight:800;line-height:1.06;letter-spacing:-.8px;color:var(--text);margin-bottom:16px;max-width:720px}
+.hero-title em{color:var(--accent);font-style:normal}
+.hero-desc{font-size:17px;color:var(--muted);max-width:520px;line-height:1.7;margin-bottom:36px}
+.hero-stats{display:flex;align-items:center;gap:28px;flex-wrap:wrap}
+.hero-stat{display:flex;flex-direction:column;gap:2px}
+.hero-stat-val{font-family:var(--font-display);font-size:22px;font-weight:800;color:var(--text)}
+.hero-stat-label{font-size:11px;color:var(--muted2);text-transform:uppercase;letter-spacing:.06em;font-weight:600}
+.hero-stat-divider{width:1px;height:32px;background:var(--border)}
+
+/* ═══════════════════════════════════════════
+   FILTERS
+═══════════════════════════════════════════ */
+.filters-wrap{max-width:1200px;margin:0 auto;padding:0 24px;position:sticky;top:56px;z-index:90;background:var(--bg);transition:background .25s}
+.filters-inner{padding:14px 0;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}
+.filters-inner::-webkit-scrollbar{display:none}
+.filter-pill{background:transparent;border:1px solid var(--border);border-radius:20px;padding:5px 14px;font-family:var(--font-body);font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;white-space:nowrap;transition:all .18s;display:inline-flex;align-items:center;gap:6px}
+.filter-pill:hover{border-color:var(--border2);color:var(--text);background:var(--surface2)}
+.filter-pill.active{background:var(--accent);border-color:var(--accent);color:#fff}
+.filter-count{font-size:10px;font-weight:700;opacity:.7}
+.filters-right{margin-left:auto;display:flex;align-items:center;gap:8px;flex-shrink:0}
+.search-wrap{position:relative}
+.search-wrap svg{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--muted);pointer-events:none}
+.search-input{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:6px 14px 6px 30px;font-family:var(--font-body);font-size:12px;color:var(--text);outline:none;width:180px;transition:all .2s}
+.search-input::placeholder{color:var(--muted2)}
+.search-input:focus{border-color:var(--border2);width:220px;box-shadow:0 0 0 3px var(--accent-mid)}
+.sort-select{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:6px 12px;font-family:var(--font-body);font-size:12px;color:var(--muted);cursor:pointer;outline:none;transition:border-color .15s;appearance:none;padding-right:24px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%237a7870' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center}
+.sort-select:focus{border-color:var(--border2)}
+
+/* ═══════════════════════════════════════════
+   GRID
+═══════════════════════════════════════════ */
+.posts-wrap{max-width:1200px;margin:0 auto;padding:0 24px}
+.posts-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;padding:36px 0 80px}
+.posts-grid.has-featured{grid-template-columns:repeat(3,1fr)}
+.posts-grid.has-featured .card:first-child{grid-column:span 2}
+
+/* ═══════════════════════════════════════════
+   CARDS
+═══════════════════════════════════════════ */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;transition:transform .2s,box-shadow .2s,border-color .2s;text-decoration:none;color:inherit}
+.card:hover{transform:translateY(-3px);box-shadow:var(--shadow-hover);border-color:var(--border2)}
+.card:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.card-img-wrap{width:100%;aspect-ratio:16/9;overflow:hidden;background:var(--surface2);flex-shrink:0;position:relative}
+.card-img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s ease}
+.card:hover .card-img{transform:scale(1.03)}
+.card-img-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:32px;background:linear-gradient(135deg,var(--surface2) 0%,var(--bg2) 100%)}
+
+/* Featured card — bigger image */
+.card.featured .card-img-wrap{aspect-ratio:21/10}
+
+.card-body{padding:20px 22px 24px;display:flex;flex-direction:column;flex:1;gap:10px}
+.card-cat{display:inline-flex;align-items:center;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;background:var(--accent-light);color:var(--accent);border:1px solid var(--accent-mid);align-self:flex-start}
+.card-title{font-family:var(--font-display);font-size:17px;font-weight:700;line-height:1.25;letter-spacing:-.2px;color:var(--text);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.card.featured .card-title{font-size:22px;-webkit-line-clamp:3}
+.card-excerpt{font-size:13px;color:var(--muted);line-height:1.65;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;flex:1}
+.card.featured .card-excerpt{-webkit-line-clamp:3;font-size:14px}
+.card-meta{display:flex;align-items:center;gap:10px;margin-top:auto;padding-top:14px;border-top:1px solid var(--border)}
+.card-author{font-size:12px;font-weight:600;color:var(--text2)}
+.card-dot{width:3px;height:3px;border-radius:50%;background:var(--border2);flex-shrink:0}
+.card-date{font-size:12px;color:var(--muted)}
+.card-rt{font-size:12px;color:var(--muted);margin-left:auto;display:flex;align-items:center;gap:4px}
+.card-rt svg{opacity:.6}
+
+/* Category color variants */
+.cat-productivity .card-cat,.cat-productivity.card-cat{background:rgba(200,240,101,0.08);color:#a8d840;border-color:rgba(200,240,101,0.2)}
+.cat-tools .card-cat,.cat-tools.card-cat{background:rgba(96,165,250,0.08);color:#60a5fa;border-color:rgba(96,165,250,0.2)}
+.cat-strategy .card-cat,.cat-strategy.card-cat{background:rgba(251,146,60,0.08);color:#fb923c;border-color:rgba(251,146,60,0.2)}
+.cat-ai .card-cat,.cat-ai.card-cat{background:rgba(167,139,250,0.08);color:#a78bfa;border-color:rgba(167,139,250,0.2)}
+.cat-tutorials .card-cat,.cat-tutorials.card-cat{background:rgba(74,222,128,0.08);color:#4ade80;border-color:rgba(74,222,128,0.2)}
+
+/* ═══════════════════════════════════════════
+   SKELETON
+═══════════════════════════════════════════ */
+.skel{background:linear-gradient(90deg,var(--surface2) 25%,var(--border) 50%,var(--surface2) 75%);background-size:200% 100%;animation:shimmer 1.4s infinite;border-radius:6px;display:block}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.card-skel{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden}
+.card-skel-img{aspect-ratio:16/9;background:var(--surface2)}
+.card-skel-body{padding:20px 22px 24px;display:flex;flex-direction:column;gap:10px}
+
+/* ═══════════════════════════════════════════
+   EMPTY / NO RESULTS
+═══════════════════════════════════════════ */
+.empty-state{text-align:center;padding:80px 24px;grid-column:1/-1}
+.empty-emoji{font-size:48px;margin-bottom:16px}
+.empty-title{font-family:var(--font-display);font-size:22px;font-weight:800;color:var(--text);margin-bottom:8px}
+.empty-sub{font-size:14px;color:var(--muted);margin-bottom:24px}
+.btn-ghost{background:transparent;border:1px solid var(--border);border-radius:8px;padding:8px 20px;font-family:var(--font-body);font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;transition:all .15s}
+.btn-ghost:hover{border-color:var(--border2);color:var(--text);background:var(--surface2)}
+
+/* ═══════════════════════════════════════════
+   LOAD MORE
+═══════════════════════════════════════════ */
+.load-more-wrap{text-align:center;padding:0 0 64px}
+.btn-load-more{background:var(--surface);border:1px solid var(--border);border-radius:40px;padding:12px 32px;font-family:var(--font-display);font-size:14px;font-weight:700;color:var(--text);cursor:pointer;transition:all .2s;letter-spacing:-.1px;display:inline-flex;align-items:center;gap:8px}
+.btn-load-more:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-light);transform:translateY(-1px)}
+.btn-load-more:disabled{opacity:.4;cursor:not-allowed;transform:none}
+
+/* ═══════════════════════════════════════════
+   NEWSLETTER STRIP
+═══════════════════════════════════════════ */
+.newsletter{background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:48px 24px;margin-bottom:0}
+.newsletter-inner{max-width:560px;margin:0 auto;text-align:center}
+.newsletter-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--accent);margin-bottom:12px}
+.newsletter-title{font-family:var(--font-display);font-size:26px;font-weight:800;color:var(--text);margin-bottom:8px;letter-spacing:-.3px}
+.newsletter-sub{font-size:14px;color:var(--muted);margin-bottom:24px;line-height:1.6}
+.newsletter-form{display:flex;gap:8px;max-width:380px;margin:0 auto}
+.newsletter-input{flex:1;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-family:var(--font-body);font-size:14px;color:var(--text);outline:none;transition:border-color .18s}
+.newsletter-input::placeholder{color:var(--muted2)}
+.newsletter-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-mid)}
+.newsletter-btn{background:var(--accent);border:none;border-radius:8px;padding:10px 20px;font-family:var(--font-display);font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;transition:all .2s;color:#fff}
+.newsletter-btn:hover{opacity:.9;transform:translateY(-1px)}
+.newsletter-note{font-size:11px;color:var(--muted2);margin-top:10px}
+
+/* ═══════════════════════════════════════════
+   SITE FOOTER
+═══════════════════════════════════════════ */
+.site-footer{background:var(--bg2);border-top:1px solid var(--border);padding:32px 24px;text-align:center}
+.footer-logo{font-family:var(--font-display);font-weight:800;font-size:16px;color:var(--accent);margin-bottom:8px}
+.site-footer p{font-size:12px;color:var(--muted2)}
+.site-footer a{color:var(--muted);text-decoration:none;transition:color .15s}
+.site-footer a:hover{color:var(--accent)}
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════ */
+@media(max-width:960px){
+  .posts-grid{grid-template-columns:repeat(2,1fr)}
+  .posts-grid.has-featured .card:first-child{grid-column:span 2}
+}
+@media(max-width:640px){
+  .posts-grid,.posts-grid.has-featured{grid-template-columns:1fr}
+  .posts-grid.has-featured .card:first-child{grid-column:span 1}
+  .hero{padding:40px 16px 32px}
+  .hero-title{font-size:32px}
+  .posts-wrap{padding:0 16px}
+  .filters-wrap{padding:0 16px}
+  .nav-inner{padding:0 16px}
+  .nav-links{display:none}
+  .newsletter-form{flex-direction:column}
+  .filters-right{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" role="navigation" aria-label="Main navigation">
+  <div class="nav-inner">
+    <a href="../index.html" class="nav-logo" aria-label="SkipTheLogic home">
+      <span class="nav-logo-dot" aria-hidden="true"></span>skipthelogic
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#featured">Products</a></li>
+      <li><a href="../index.html#trap">Services</a></li>
+      <li><a href="../index.html#agency">Resources</a></li>
+      <li><a href="index_blog.html" class="active" aria-current="page">Blog</a></li>
+      <li><a href="../index.html#agency">Work With Us</a></li>
+    </ul>
+    <a href="../index.html#agency" class="nav-cta">Get the Guide →</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" aria-label="Blog introduction">
+  <div class="hero-label">The Blog</div>
+  <h1 class="hero-title">Skip the noise.<br><em>Keep the signal.</em></h1>
+  <p class="hero-desc">Practical guides, sharp tools, and clear thinking on productivity, AI, and modern work.</p>
+  <div class="hero-stats" id="hero-stats" aria-live="polite">
+    <div class="hero-stat">
+      <span class="hero-stat-val" id="stat-posts">—</span>
+      <span class="hero-stat-label">Articles</span>
+    </div>
+    <div class="hero-stat-divider"></div>
+    <div class="hero-stat">
+      <span class="hero-stat-val" id="stat-cats">—</span>
+      <span class="hero-stat-label">Topics</span>
+    </div>
+    <div class="hero-stat-divider"></div>
+    <div class="hero-stat">
+      <span class="hero-stat-val" id="stat-rt">—</span>
+      <span class="hero-stat-label">Avg. read time</span>
+    </div>
+  </div>
+</section>
+
+<!-- FILTERS -->
+<div class="filters-wrap" role="navigation" aria-label="Filter by category">
+  <div class="filters-inner">
+    <button class="filter-pill active" data-cat="all" onclick="setCategory('all',this)">
+      All <span class="filter-count" id="count-all"></span>
+    </button>
+    <div id="cat-filters"></div>
+    <div class="filters-right">
+      <div class="search-wrap">
+        <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true">
+          <circle cx="5.5" cy="5.5" r="4" stroke="currentColor" stroke-width="1.3"/>
+          <path d="M9 9l2.5 2.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+        </svg>
+        <input type="search" class="search-input" id="search-input" placeholder="Search…" oninput="onSearch()" aria-label="Search posts">
+      </div>
+      <select class="sort-select" id="sort-select" onchange="onSort()" aria-label="Sort posts">
+        <option value="newest">Newest</option>
+        <option value="oldest">Oldest</option>
+        <option value="readtime">Read time</option>
+        <option value="title">A → Z</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<!-- POSTS -->
+<main class="posts-wrap" id="main-content" role="main">
+  <div class="posts-grid" id="posts-grid" aria-live="polite" aria-label="Blog posts">
+    <!-- Skeletons -->
+    ${[...Array(6)].map((_,i)=>`
+    <div class="card-skel" aria-hidden="true">
+      <div class="card-skel-img skel"></div>
+      <div class="card-skel-body">
+        <div class="skel" style="height:18px;width:${60+i*5}px"></div>
+        <div class="skel" style="height:22px;width:90%"></div>
+        <div class="skel" style="height:22px;width:${70+i*3}%"></div>
+        <div class="skel" style="height:14px;width:60%;margin-top:4px"></div>
+        <div class="skel" style="height:14px;width:40%"></div>
+      </div>
+    </div>`).join('')}
+  </div>
+  <div class="load-more-wrap" id="load-more-wrap" style="display:none">
+    <button class="btn-load-more" id="load-more-btn" onclick="loadMore()">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      Load more articles
+    </button>
+  </div>
+</main>
+
+<!-- NEWSLETTER -->
+<section class="newsletter" aria-label="Newsletter signup">
+  <div class="newsletter-inner">
+    <div class="newsletter-label">Stay sharp</div>
+    <h2 class="newsletter-title">Ideas worth keeping</h2>
+    <p class="newsletter-sub">Get the best articles from SkipTheLogic in your inbox — no fluff, no filler.</p>
+    <form class="newsletter-form" onsubmit="handleSubscribe(event)" role="form" aria-label="Newsletter subscription">
+      <input type="email" class="newsletter-input" placeholder="you@example.com" required aria-label="Email address">
+      <button type="submit" class="newsletter-btn">Subscribe</button>
+    </form>
+    <p class="newsletter-note">No spam. Unsubscribe anytime.</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="site-footer" role="contentinfo">
+  <div class="footer-logo">SkipTheLogic</div>
+  <p>© <span id="footer-year"></span> SkipTheLogic · <a href="index.html">Blog</a> · <a href="#">About</a></p>
+</footer>
+
+<script>
+const SUPA_URL = 'https://xwxzdxgzsjgkfrjyhwna.supabase.co';
+const SUPA_KEY = 'sb_publishable_BrreLGVx-F8zQEnRgCybhQ_-FxK8cMj';
+const PAGE_SIZE = 9;
+
+// ── STATE ─────────────────────────────────────────────────────
+let allPosts   = [];
+let filtered   = [];
+let displayed  = 0;
+let activecat  = 'all';
+let searchQ    = '';
+let sortMode   = 'newest';
+
+// ── INIT ──────────────────────────────────────────────────────
+document.getElementById('footer-year').textContent = new Date().getFullYear();
+
+// Read URL params on load
+(function(){
+  const params = new URLSearchParams(location.search);
+  if (params.get('cat')) activecat = params.get('cat');
+  if (params.get('q'))   { searchQ = params.get('q'); document.getElementById('search-input').value = searchQ; }
+})();
+
+// ── FETCH ─────────────────────────────────────────────────────
+async function loadPosts() {
+  try {
+    const r = await fetch(
+      `${SUPA_URL}/rest/v1/posts?status=eq.published&select=id,title,slug,excerpt,category,author,read_time,cover_image,created_at,updated_at&order=created_at.desc`,
+      { headers: { 'apikey': SUPA_KEY, 'Authorization': `Bearer ${SUPA_KEY}` } }
+    );
+    if (!r.ok) throw new Error('Failed to fetch');
+    allPosts = await r.json();
+    buildStats();
+    buildCategoryFilters();
+    applyFilters();
+  } catch(e) {
+    showError('Could not load posts. Please try again later.');
+  }
+}
+
+// ── STATS ─────────────────────────────────────────────────────
+function buildStats() {
+  const cats = new Set(allPosts.map(p => p.category).filter(Boolean));
+  const avgRt = allPosts.length
+    ? Math.round(allPosts.reduce((a,p) => a + (p.read_time||5), 0) / allPosts.length)
+    : 0;
+  animateCount('stat-posts', allPosts.length);
+  animateCount('stat-cats', cats.size);
+  document.getElementById('stat-rt').textContent = avgRt ? `${avgRt}m` : '—';
+}
+
+function animateCount(id, target) {
+  const el = document.getElementById(id);
+  let n = 0;
+  const step = Math.max(1, Math.floor(target / 20));
+  const t = setInterval(() => {
+    n = Math.min(n + step, target);
+    el.textContent = n;
+    if (n >= target) clearInterval(t);
+  }, 40);
+}
+
+// ── CATEGORIES ────────────────────────────────────────────────
+function buildCategoryFilters() {
+  const catMap = {};
+  allPosts.forEach(p => { if (p.category) catMap[p.category] = (catMap[p.category]||0)+1; });
+
+  // Update all count
+  document.getElementById('count-all').textContent = allPosts.length;
+
+  const wrap = document.getElementById('cat-filters');
+  wrap.innerHTML = Object.entries(catMap)
+    .sort((a,b) => b[1]-a[1])
+    .map(([cat, count]) => {
+      const active = cat === activecat ? ' active' : '';
+      return `<button class="filter-pill${active}" data-cat="${esc(cat)}" onclick="setCategory('${esc(cat)}',this)">
+        ${esc(cat)} <span class="filter-count">${count}</span>
+      </button>`;
+    }).join('');
+}
+
+function setCategory(cat, btn) {
+  activecat = cat;
+  document.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  displayed = 0;
+  applyFilters();
+  // Update URL without reload
+  const url = new URL(location.href);
+  cat === 'all' ? url.searchParams.delete('cat') : url.searchParams.set('cat', cat);
+  history.replaceState({}, '', url);
+}
+
+// ── SEARCH / SORT ─────────────────────────────────────────────
+function onSearch() {
+  searchQ = document.getElementById('search-input').value.trim().toLowerCase();
+  displayed = 0;
+  applyFilters();
+}
+
+function onSort() {
+  sortMode = document.getElementById('sort-select').value;
+  displayed = 0;
+  applyFilters();
+}
+
+// ── FILTER + SORT ─────────────────────────────────────────────
+function applyFilters() {
+  filtered = allPosts.filter(p => {
+    const matchCat  = activecat === 'all' || p.category === activecat;
+    const matchSearch = !searchQ ||
+      (p.title||'').toLowerCase().includes(searchQ) ||
+      (p.excerpt||'').toLowerCase().includes(searchQ) ||
+      (p.category||'').toLowerCase().includes(searchQ) ||
+      (p.author||'').toLowerCase().includes(searchQ);
+    return matchCat && matchSearch;
+  });
+
+  filtered.sort((a,b) => {
+    if (sortMode === 'newest')   return new Date(b.created_at) - new Date(a.created_at);
+    if (sortMode === 'oldest')   return new Date(a.created_at) - new Date(b.created_at);
+    if (sortMode === 'readtime') return (a.read_time||5) - (b.read_time||5);
+    if (sortMode === 'title')    return (a.title||'').localeCompare(b.title||'');
+    return 0;
+  });
+
+  displayed = 0;
+  renderGrid(true);
+}
+
+// ── RENDER ────────────────────────────────────────────────────
+function renderGrid(reset = false) {
+  const grid = document.getElementById('posts-grid');
+  const slice = filtered.slice(displayed, displayed + PAGE_SIZE);
+  displayed += slice.length;
+
+  if (reset) {
+    if (!filtered.length) {
+      grid.innerHTML = `
+        <div class="empty-state">
+          <div class="empty-emoji">🔍</div>
+          <div class="empty-title">No posts found</div>
+          <div class="empty-sub">${searchQ ? `No results for "${esc(searchQ)}"` : 'Nothing in this category yet.'}</div>
+          <button class="btn-ghost" onclick="resetFilters()">Clear filters</button>
+        </div>`;
+      document.getElementById('load-more-wrap').style.display = 'none';
+      return;
+    }
+    grid.innerHTML = '';
+    // Mark first card as featured if it's the first render and we have enough posts
+    const hasFeat = !searchQ && activecat === 'all' && filtered.length >= 3;
+    grid.className = `posts-grid${hasFeat ? ' has-featured' : ''}`;
+    slice.forEach((p, i) => grid.insertAdjacentHTML('beforeend', renderCard(p, hasFeat && i === 0)));
+  } else {
+    slice.forEach(p => grid.insertAdjacentHTML('beforeend', renderCard(p, false)));
+  }
+
+  // Load more button
+  const btn = document.getElementById('load-more-wrap');
+  btn.style.display = displayed < filtered.length ? 'block' : 'none';
+}
+
+function loadMore() {
+  renderGrid(false);
+}
+
+function renderCard(p, featured=false) {
+  const catSlug = (p.category||'').toLowerCase().replace(/\s+/g,'-');
+  const href    = `post.html?slug=${encodeURIComponent(p.slug||'')}`;
+  const dateStr = fmtDate(p.created_at);
+  const rt      = p.read_time || 5;
+
+  const img = p.cover_image
+    ? `<img class="card-img" src="${esc(p.cover_image)}" alt="${esc(p.title||'')}" loading="lazy" decoding="async" onerror="this.parentElement.innerHTML='<div class=\\'card-img-ph\\'>📝</div>'">`
+    : `<div class="card-img-ph">📝</div>`;
+
+  return `<a href="${href}" class="card ${featured?'featured':''} cat-${catSlug}" aria-label="${esc(p.title||'Read post')}">
+    <div class="card-img-wrap">${img}</div>
+    <div class="card-body">
+      ${p.category ? `<span class="card-cat">${esc(p.category)}</span>` : ''}
+      <h2 class="card-title">${esc(p.title||'Untitled')}</h2>
+      ${p.excerpt ? `<p class="card-excerpt">${esc(p.excerpt)}</p>` : ''}
+      <div class="card-meta">
+        <span class="card-author">${esc(p.author||'SkipTheLogic')}</span>
+        <span class="card-dot"></span>
+        <time class="card-date" datetime="${p.created_at||''}">${dateStr}</time>
+        <span class="card-rt">
+          <svg width="11" height="11" viewBox="0 0 11 11" fill="none" aria-hidden="true"><circle cx="5.5" cy="5.5" r="4.5" stroke="currentColor" stroke-width="1.1"/><path d="M5.5 3v2.5l1.5 1.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg>
+          ${rt}m
+        </span>
+      </div>
+    </div>
+  </a>`;
+}
+
+// ── HELPERS ───────────────────────────────────────────────────
+function fmtDate(iso) {
+  if (!iso) return '';
+  return new Date(iso).toLocaleDateString('en-US', {year:'numeric',month:'short',day:'numeric'});
+}
+
+function esc(str) {
+  return String(str||'')
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
+function showError(msg) {
+  document.getElementById('posts-grid').innerHTML = `
+    <div class="empty-state">
+      <div class="empty-emoji">⚠️</div>
+      <div class="empty-title">Something went wrong</div>
+      <div class="empty-sub">${esc(msg)}</div>
+      <button class="btn-ghost" onclick="loadPosts()">Try again</button>
+    </div>`;
+}
+
+function resetFilters() {
+  activecat = 'all';
+  searchQ   = '';
+  document.getElementById('search-input').value = '';
+  document.querySelectorAll('.filter-pill').forEach((b,i) => b.classList.toggle('active', i===0));
+  history.replaceState({}, '', location.pathname);
+  applyFilters();
+}
+
+function handleSubscribe(e) {
+  e.preventDefault();
+  const input = e.target.querySelector('input');
+  const btn   = e.target.querySelector('button');
+  btn.textContent = '✓ Subscribed!';
+  btn.disabled = true;
+  input.value  = '';
+  setTimeout(() => { btn.textContent = 'Subscribe'; btn.disabled = false; }, 3000);
+}
+
+// ── GO ────────────────────────────────────────────────────────
+loadPosts();
+</script>
+</body>
+</html>

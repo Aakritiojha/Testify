@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SkipTheLogic Admin — Login</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0a0a;
+  --surface: #141414;
+  --surface2: #1c1c1c;
+  --border: #2c2c2c;
+  --border2: #383838;
+  --accent: #c8f065;
+  --accent-dim: rgba(200,240,101,0.1);
+  --accent-glow: rgba(200,240,101,0.15);
+  --text: #efefef;
+  --muted: #777;
+  --muted2: #555;
+  --danger: #ff5c5c;
+  --success: #4ade80;
+  --radius: 10px;
+  --font-body: 'DM Sans', sans-serif;
+  --font-display: 'Syne', sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-size:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;overflow:hidden;position:relative}
+
+/* GRID BG */
+.bg-grid{position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);
+  background-size:48px 48px;opacity:.4}
+.bg-glow{position:fixed;top:50%;left:50%;transform:translate(-50%,-60%);width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(200,240,101,0.07) 0%,transparent 70%);pointer-events:none;z-index:0}
+
+/* CARD */
+.card{position:relative;z-index:1;width:100%;max-width:380px;padding:0 20px}
+
+.brand{text-align:center;margin-bottom:36px}
+.brand-logo{font-family:var(--font-display);font-size:22px;font-weight:800;color:var(--accent);letter-spacing:-.3px;display:inline-block;margin-bottom:8px}
+.brand-sub{font-size:12px;color:var(--muted)}
+
+.login-box{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:32px;position:relative;overflow:hidden}
+.login-box::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(200,240,101,0.3),transparent)}
+
+.box-title{font-family:var(--font-display);font-size:20px;font-weight:800;margin-bottom:4px;letter-spacing:-.2px}
+.box-sub{font-size:12px;color:var(--muted);margin-bottom:28px}
+
+.field{margin-bottom:16px}
+.field-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:7px;display:block}
+
+.input-wrap{position:relative}
+.input-wrap svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--muted);pointer-events:none;transition:color .2s;flex-shrink:0}
+.field-input{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px 40px 10px 36px;color:var(--text);font-family:var(--font-body);font-size:14px;outline:none;transition:border-color .2s,box-shadow .2s}
+.field-input::placeholder{color:var(--muted2)}
+.field-input:focus{border-color:rgba(200,240,101,.4);box-shadow:0 0 0 3px var(--accent-dim)}
+.field-input:focus + svg, .input-wrap:focus-within svg{color:var(--accent)}
+
+/* password toggle */
+.pw-toggle{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:transparent;border:none;color:var(--muted);cursor:pointer;padding:4px;border-radius:4px;display:flex;align-items:center;transition:color .15s}
+.pw-toggle:hover{color:var(--text)}
+
+/* error */
+.field-error{font-size:11px;color:var(--danger);margin-top:6px;display:none;align-items:center;gap:4px}
+.field-error.visible{display:flex}
+
+/* submit */
+.btn-login{width:100%;background:var(--accent);color:#0a0a0a;font-family:var(--font-body);font-size:14px;font-weight:700;padding:11px;border:none;border-radius:8px;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:22px;position:relative;overflow:hidden}
+.btn-login:hover:not(:disabled){background:#d4f570;transform:translateY(-1px);box-shadow:0 6px 24px rgba(200,240,101,.28)}
+.btn-login:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
+.btn-login .spinner{width:14px;height:14px;border:2px solid rgba(0,0,0,.2);border-top-color:#0a0a0a;border-radius:50%;animation:spin .6s linear infinite;display:none}
+.btn-login.loading .spinner{display:block}
+.btn-login.loading .btn-text{opacity:0}
+.btn-login .btn-text{position:absolute}
+.btn-login.loading{pointer-events:none}
+
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* shake animation */
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+.shake{animation:shake .4s ease}
+
+/* success flash */
+@keyframes successPulse{0%{box-shadow:0 0 0 0 rgba(74,222,128,.4)}100%{box-shadow:0 0 0 16px rgba(74,222,128,0)}}
+.login-box.success{border-color:rgba(74,222,128,.4);animation:successPulse .5s ease forwards}
+
+.footer-note{text-align:center;margin-top:20px;font-size:11px;color:var(--muted2)}
+
+/* toast */
+.toast{position:fixed;bottom:24px;right:24px;z-index:999;background:var(--surface);border:1px solid var(--border);border-radius:9px;padding:12px 16px;display:flex;align-items:center;gap:10px;font-size:13px;font-weight:500;box-shadow:0 8px 30px rgba(0,0,0,.4);transform:translateY(20px);opacity:0;transition:all .3s cubic-bezier(.34,1.56,.64,1);pointer-events:none}
+.toast.show{transform:translateY(0);opacity:1}
+.toast.success .ti{color:var(--success)}.toast.error .ti{color:var(--danger)}
+.ti{font-size:16px;flex-shrink:0}
+</style>
+</head>
+<body>
+
+<div class="bg-grid"></div>
+<div class="bg-glow"></div>
+
+<div class="card">
+  <div class="brand">
+    <div class="brand-logo">SkipTheLogic</div>
+    <div class="brand-sub">Admin Panel</div>
+  </div>
+
+  <div class="login-box" id="login-box">
+    <div class="box-title">Welcome back</div>
+    <div class="box-sub">Sign in to manage your content</div>
+
+    <div class="field">
+      <label class="field-label" for="password-input">Password</label>
+      <div class="input-wrap">
+        <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+          <rect x="2.5" y="6.5" width="10" height="7" rx="1.5" stroke="currentColor" stroke-width="1.3"/>
+          <path d="M5 6.5V4.5a2.5 2.5 0 0 1 5 0v2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+          <circle cx="7.5" cy="10" r="1" fill="currentColor"/>
+        </svg>
+        <input
+          type="password"
+          class="field-input"
+          id="password-input"
+          placeholder="Enter your password"
+          autocomplete="current-password"
+          onkeydown="if(event.key==='Enter')login()"
+          oninput="clearError()"
+        >
+        <button class="pw-toggle" type="button" onclick="togglePw()" tabindex="-1" aria-label="Toggle password visibility">
+          <svg id="eye-icon" width="15" height="15" viewBox="0 0 15 15" fill="none">
+            <path d="M1 7.5S3.5 3 7.5 3s6.5 4.5 6.5 4.5S12.5 12 7.5 12 1 7.5 1 7.5Z" stroke="currentColor" stroke-width="1.3"/>
+            <circle cx="7.5" cy="7.5" r="1.8" stroke="currentColor" stroke-width="1.3"/>
+          </svg>
+        </button>
+      </div>
+      <div class="field-error" id="pw-error">
+        <span>✕</span>
+        <span id="error-msg">Incorrect password. Try again.</span>
+      </div>
+    </div>
+
+    <button class="btn-login" id="login-btn" onclick="login()">
+      <div class="spinner"></div>
+      <span class="btn-text">Sign in</span>
+    </button>
+  </div>
+
+  <div class="footer-note">SkipTheLogic © 2025 · Admin access only</div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <span class="ti" id="ti"></span>
+  <span id="tm"></span>
+</div>
+
+<script>
+// ─────────────────────────────────────────────────────────────
+// CONFIG — change ADMIN_PASSWORD to whatever you want,
+// or swap the check in login() to validate against Supabase.
+// ─────────────────────────────────────────────────────────────
+const ADMIN_PASSWORD = 'skipthelogic2025';
+const SESSION_KEY    = 'stl_admin_session';
+const REDIRECT_TO    = 'dashboard.html';
+
+// ── If already logged in, skip straight to dashboard ────────
+if (sessionStorage.getItem(SESSION_KEY) === 'true') {
+  window.location.replace(REDIRECT_TO);
+}
+
+// ── LOGIN ────────────────────────────────────────────────────
+async function login() {
+  const pw  = document.getElementById('password-input').value;
+  const btn = document.getElementById('login-btn');
+
+  if (!pw) {
+    showError('Please enter your password.');
+    return;
+  }
+
+  btn.classList.add('loading');
+  btn.disabled = true;
+
+  // Small artificial delay so it doesn't feel instant (UX trust)
+  await new Promise(r => setTimeout(r, 600));
+
+  if (pw === ADMIN_PASSWORD) {
+    // ✅ Correct — set session & redirect
+    sessionStorage.setItem(SESSION_KEY, 'true');
+    document.getElementById('login-box').classList.add('success');
+    btn.classList.remove('loading');
+    btn.style.background = 'var(--success)';
+    btn.querySelector('.btn-text').textContent = '✓ Signed in';
+    btn.disabled = false;
+    setTimeout(() => window.location.replace(REDIRECT_TO), 700);
+  } else {
+    // ✕ Wrong password
+    btn.classList.remove('loading');
+    btn.disabled = false;
+    showError('Incorrect password. Try again.');
+    document.getElementById('login-box').classList.add('shake');
+    document.getElementById('password-input').value = '';
+    document.getElementById('password-input').focus();
+    setTimeout(() => document.getElementById('login-box').classList.remove('shake'), 500);
+  }
+}
+
+function showError(msg) {
+  document.getElementById('error-msg').textContent = msg;
+  document.getElementById('pw-error').classList.add('visible');
+  document.getElementById('field-input')?.classList.add('error');
+}
+
+function clearError() {
+  document.getElementById('pw-error').classList.remove('visible');
+}
+
+function togglePw() {
+  const inp  = document.getElementById('password-input');
+  const icon = document.getElementById('eye-icon');
+  const show = inp.type === 'password';
+  inp.type = show ? 'text' : 'password';
+  icon.innerHTML = show
+    ? `<path d="M2 2l11 11M6.5 6.7A1.8 1.8 0 0 0 7.5 9.3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+       <path d="M1 7.5S3.5 3 7.5 3c1.1 0 2.1.3 3 .8M14 7.5S12.5 12 7.5 12c-.7 0-1.4-.1-2-.4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>`
+    : `<path d="M1 7.5S3.5 3 7.5 3s6.5 4.5 6.5 4.5S12.5 12 7.5 12 1 7.5 1 7.5Z" stroke="currentColor" stroke-width="1.3"/>
+       <circle cx="7.5" cy="7.5" r="1.8" stroke="currentColor" stroke-width="1.3"/>`;
+}
+
+// Auto-focus
+document.getElementById('password-input').focus();
+</script>
+</body>
+</html>
